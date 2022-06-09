@@ -1,0 +1,184 @@
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="staticBackdropLabel">
+                    Escoge la compañía a destinar los productos:
+                </h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-dark bg-secondary">
+                        <thead class="bg-secondary text-light">
+                            <td class="p-2">
+                                N. compañía
+                            </td>
+                            <td class="p-2">
+                                Descripción
+                            </td>
+                            <td class="p-2">
+                                País
+                            </td>
+                            <td class="p-2">
+                                Ciudad
+                            </td>
+                            <td></td>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor=" let x of arrComp ">
+                                <td>{{x.name_cia}}</td>
+                                <td>{{x.descrip_cia}}</td>
+                                <td>{{x.pais_cia}}</td>
+                                <td>{{x.ciudad_cia}}</td>
+                                <td class="cur text-info" data-bs-dismiss="modal" (click)="asignCompany(x.codec_cia, x.name_cia)">
+                                    <mat-icon>label_important</mat-icon>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="title d-flex justify-content-between w-100">
+    <div class="xxx">
+        <h2 class="tih">Maestro de Productos:</h2>
+    </div>
+    <div class="btns d-flex flex-wrap justify-content-end">
+        <button class="btnsdiv d-flex align-items-center" [ngStyle]="{'background-color': _color_btnA, 'border-bottom':'solid 5px ' + _color_bord_A }" (click)="changeModsView(true, false, '#5C277B', '#361E45', '#0EC9BB', 'whitesmoke', true)">
+        <mat-icon [ngStyle]="{'color': _color_bord_A }">add</mat-icon>Registrar
+      </button>
+        <button class="btnsdiv d-flex align-items-center" [ngStyle]="{'background-color': _color_btnB, 'border-bottom':'solid 5px ' + _color_bord_B }" (click)="changeModsView(false, true, '#361E45', '#5C277B', 'whitesmoke', '#0EC9BB', false)">
+        <mat-icon [ngStyle]="{'color': _color_bord_B }" >app_registration</mat-icon>Ingresados
+      </button>
+    </div>
+</div>
+
+<div class="ds animate__animated animate__fadeInRight mt-3" *ngIf="_show_part_ing">
+    <div class="comps w-100 m-2 bg-secondary p-1 text-light" style="height: 70px;">
+        <span class="p-3">Mi empresa: <strong>{{labelMessage | uppercase}}</strong></span>
+        <button *ngIf="btnPost" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" class="w-100 d-flex align-items-center justify-content-center" mat-raised-button color="warn">
+      <mat-icon>leaderboard</mat-icon>Escoger mi compañía
+    </button>
+    </div>
+    <div class="sector-img">
+        <div class="inpfile w-100">
+            <label for="img" class="lb w-100">
+              Click en el siguiente recuadro, sube una imagen de tu producto en los siguientes formatos <strong> (.JPG o .PNG): </strong><hr>
+              <div class="img w-100" id="boxImg" ></div>
+            </label><br>
+            <input type="file" (change)="encodeImageFileAsURLA('img', 'boxImg')" id="img" [(ngModel)]="_fServ" name="_fServ" class="inp-control">
+        </div>
+    </div>
+    <div class="data">
+        <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Nombre del produucto:</mat-label>
+            <input matInput type="text" [(ngModel)]="_nom_prod" [disabled]="_lock">
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Descripción del producto:</mat-label>
+            <textarea matInput [(ngModel)]="_desc_prod" [disabled]="_lock"></textarea>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Prescripción del producto: <span class="note bg-primary p-1 text-light">(Para quien va dirijido este producto)</span> </mat-label>
+            <input matInput type="text" [(ngModel)]="_pres_prod" [disabled]="_lock">
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Costo del Producto:</mat-label>
+            <input matInput type="number" [(ngModel)]="_cost_prod" [disabled]="_lock">
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Descuento del Producto:</mat-label>
+            %.<input matInput type="number" [(ngModel)]="_descu" [disabled]="_lock">
+        </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="fill" class="inputsResp p-1" style="width: 20%;">
+        <mat-label>Color:</mat-label>
+        <input matInput type="text" [(ngModel)]="_color" [disabled]="_lock">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="inputsResp w-50 p-1">
+        <mat-label>Uso:</mat-label>
+        <input matInput type="text" [(ngModel)]="_uso" [disabled]="_lock">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="inputsResp p-1" style="width: 28%;">
+        <mat-label>Grupo:</mat-label>
+        <input matInput type="text" [(ngModel)]="_grupo" [disabled]="_lock">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="inputsResp w-25">
+        <mat-label>Sub Grupo:</mat-label>
+        <input matInput type="text" [(ngModel)]="_sgrupo" [disabled]="_lock">
+    </mat-form-field>
+
+
+</div>
+<div class="btnsets w-100">
+    <button *ngIf="btnPost" (click)="saveProdDB()" [disabled]="_lock" class="w-100 d-flex align-items-center justify-content-center" mat-raised-button color="accent">
+    <!-- (click)="saveComp()"  -->
+<mat-icon>fact_check</mat-icon>
+Guardar producto
+</button>
+
+    <div class="btnsets d-flex" *ngIf="btnPut">
+        <button (click)="upProdDB()" class="w-75 d-flex align-items-center justify-content-center" mat-raised-button color="primary">
+        <mat-icon>update</mat-icon>Actualizar
+      </button>
+        <button (click)="cleanUp()" class="w-25 d-flex align-items-center justify-content-center" mat-raised-button color="warn">
+  <mat-icon>cancel</mat-icon>
+</button>
+    </div>
+</div>
+<span class="notes">Productos ingresados para esta compañía: <strong style="color: purple;">{{cantProducts}}</strong></span>
+<div class="ds  animate__animated animate__fadeInRight mt-3" *ngIf="_show_part_reg">
+    <div class="searck w-100">
+        <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Buscador de productos por nombre (Presione la tecla ENTER):</mat-label>
+            <input matInput type="search" [(ngModel)]="_search" (keyup.enter)="this.getProducts(75, 'nom_prod', _search, 'asc', this.x)">
+        </mat-form-field>
+    </div>
+    <div class="tableFixHead w-100 ">
+        <table>
+            <thead>
+                <tr>
+                    <th class="p-2"> Nombre </th>
+                    <th class="p-2"> Descripción </th>
+                    <th class="p-2"> Costo </th>
+                    <th class="p-2"> Desc. </th>
+                    <th class="p-2"> Grupo </th>
+                    <th class="p-2"> Sub Grupo </th>
+                    <th class="p-2">
+                        <mat-icon class="text-secondary">delete_outline</mat-icon>
+                    </th>
+                    <th class="p-2">
+                        <mat-icon class="text-secondary">edit</mat-icon>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let pr of arrProducts">
+                    <td> {{pr.nom_prod}} </td>
+                    <td> {{pr.desc_prod}} </td>
+                    <td> {{pr.cost_prod}} </td>
+                    <td> {{pr.descu}} </td>
+                    <td> {{pr.grupo}} </td>
+                    <td> {{pr.sgrupo}} </td>
+                    <td class="deletes">
+                        <mat-icon class="text-light" (click)="delProd(pr.id)">
+                            delete_outline
+                        </mat-icon>
+                    </td>
+                    <td class="updates" (click)="asignData(pr.img_prods, pr.id, pr.nom_prod, pr.cost_prod, pr.descu, pr.pres_prod, pr.desc_prod, pr.color, pr.uso, pr.grupo, pr.sgrupo, pr.cod_prod)">
+                        <mat-icon class="text-light">edit</mat-icon>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>

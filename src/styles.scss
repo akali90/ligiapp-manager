@@ -1,1 +1,332 @@
 /* You can add global styles to this file, and also import other style files */
+
+// import 'animate.css';
+html,
+body {
+    height: 100vh;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.title {
+    background-color: rgba($color: #000000, $alpha: 0.1);
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    display: flex;
+    align-items: center;
+}
+
+// #btnset {
+//     width: 100%;
+//     position: absolute;
+// }
+.tih {
+    padding-left: 15px !important;
+}
+
+h2 {
+    margin: 0px !important;
+}
+
+.btnsdiv {
+    background-color: #34213F;
+    color: whitesmoke;
+    padding: 10px;
+    transition: ease all 0.5s;
+}
+
+.tableFixHead {
+    overflow: auto;
+    height: 440px;
+    border: dashed 0.5px gray;
+}
+
+.tableFixHead thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+
+/* Just common table stuff. Really. */
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.updates,
+.deletes {
+    background-color: #34213F;
+}
+
+th,
+td {
+    padding: 8px 16px;
+    border: solid 1px rgb(208, 208, 208);
+}
+
+th {
+    background: #eee;
+}
+
+body {
+    margin: 0;
+    background-color: #623c88;
+}
+
+.cur {
+    cursor: pointer;
+    transition: ease all 0.5s;
+}
+
+.cur:hover {
+    transition: ease all 0.5s;
+    color: yellowgreen !important;
+}
+
+.ds {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    height: 450px;
+    overflow-y: auto;
+}
+
+.inp-control {
+    width: 1px;
+    height: 1px;
+}
+
+#dataA {
+    width: 100%;
+}
+
+.sector-img {
+    // border: solid 1px gray;
+    width: 45%;
+}
+
+.data {
+    // border: solid 1px gray;
+    width: 45%;
+}
+
+.a {
+    // overflow: auto;
+}
+
+@media screen and (max-width: 1000px) {
+    .contsss {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    #b {
+        background-color: whitesmoke;
+        width: 75%;
+    }
+    #a {
+        width: 175px;
+    }
+    .navs {
+        width: 175px;
+    }
+    .xA {
+        height: 270px !important;
+        width: 100% !important;
+    }
+    .hhj {
+        height: 240px !important;
+    }
+}
+
+@media screen and (max-width: 790px) {
+    .tih {
+        font-size: 10pt !important;
+    }
+    .comps {
+        height: 100px !important;
+    }
+    .btnsdiv {
+        width: 110px;
+        font-size: 10pt;
+    }
+    th,
+    td,
+    tr {
+        font-size: 8pt !important;
+    }
+    .contsss {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    #b {
+        background-color: whitesmoke;
+        width: 85% !important;
+    }
+    .xA {
+        width: 100% !important;
+        height: 270px !important;
+        overflow-y: auto;
+    }
+    .hhj {
+        height: 240px !important;
+    }
+    #a {
+        width: 175px;
+    }
+    .navs {
+        width: 175px;
+    }
+}
+
+@media screen and (max-width: 750px) {
+    .sector-img {
+        // border: solid 1px gray;
+        width: 100%;
+    }
+    .data {
+        width: 100%;
+    }
+    .cont {
+        padding: 0px !important;
+    }
+    .navs {
+        width: 50px !important;
+        padding: 5px !important;
+    }
+    .mods {
+        display: none !important;
+    }
+    #a {
+        width: 50px !important;
+    }
+    .btnnavs {
+        display: none !important;
+    }
+    .a {
+        overflow: auto;
+    }
+    .inputsResp {
+        width: 100% !important;
+    }
+}
+
+.btnnavs {
+    background-color: #623c88;
+    height: 55px;
+    width: 12px;
+    position: absolute;
+    top: 50%;
+    left: 181px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    box-shadow: -5px 0px 3px rgba($color: #000000, $alpha: 0.3);
+    transition: ease all 0.5s;
+}
+
+.btnnavs:hover {
+    background-color: #68bbad;
+    transition: ease all 0.5s;
+    box-shadow: -2px 0px 2px rgba($color: #000000, $alpha: 0.5);
+}
+
+@keyframes animWidthOn {
+    0% {
+        width: 175px;
+    }
+    90% {
+        width: 65px;
+    }
+    100% {
+        width: 55px;
+    }
+}
+
+@keyframes animWidthOn {
+    0% {
+        width: 55px;
+    }
+    90% {
+        width: 65px;
+    }
+    100% {
+        width: 175px;
+    }
+}
+
+.cont {
+    height: 100%;
+}
+
+*::-webkit-scrollbar {
+    width: 8px;
+    /* Tamaño del scroll en vertical */
+    height: 8px;
+    /* Tamaño del scroll en horizontal */
+    // display: none;
+    /* Ocultar scroll */
+}
+
+.lb {}
+
+.contentData {}
+
+// /* Ponemos un color de fondo y redondeamos las esquinas del thumb */
+*::-webkit-scrollbar-thumb {
+    background: rgb(124, 124, 124);
+    border-radius: 4px;
+}
+
+// /* Cambiamos el fondo y agregamos una sombra cuando esté en hover */
+*::-webkit-scrollbar-thumb:hover {
+    background: #626262;
+    box-shadow: 0 0 2px 1px rgba(13, 215, 191, 0.2);
+}
+
+// /* Cambiamos el fondo cuando esté en active */
+*::-webkit-scrollbar-thumb:active {
+    background-color: #0de5c1;
+}
+
+
+/* Ponemos un color de fondo y redondeamos las esquinas del track */
+
+*::-webkit-scrollbar-track {
+    background: #e1e1e1;
+    border-radius: 4px;
+}
+
+.note {
+    background-color: #ababab;
+    font-size: 9pt;
+}
+
+
+/* Cambiamos el fondo cuando esté en active o hover */
+
+*::-webkit-scrollbar-track:hover,
+*::-webkit-scrollbar-track:active {
+    background: #d4d4d4;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}

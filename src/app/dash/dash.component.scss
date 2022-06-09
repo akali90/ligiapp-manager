@@ -1,0 +1,103 @@
+.navs {
+    height: 100%;
+    background-color: rgb(219, 219, 219);
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.a {
+    height: 100%;
+    box-shadow: 10px 0px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    border: groove 2px white;
+}
+
+.ccesion {
+    cursor: pointer;
+    transition: ease all 0.5s;
+}
+
+.ccesion:hover {
+    color: orangered !important;
+    transition: ease all 0.5s;
+}
+
+.cont {
+    display: flex;
+    justify-content: space-between;
+}
+
+.mainMods {
+    background-color: rgb(216, 216, 216);
+    border-radius: 5px;
+    transition: ease all 0.5s;
+    // box-shadow: 0px 5px 7px rgba(0, 0, 0, 0.5);
+    border: solid 1px white;
+}
+
+.mainMods:hover {
+    transition: ease all 0.5s;
+    background-color: rgb(14, 184, 184);
+    color: rgb(23, 114, 116);
+    transition: ease all 1s;
+    // box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.5);
+}
+
+#b {
+    background-color: whitesmoke;
+    width: 85%;
+    padding: 15px;
+}
+
+#a {
+    border-radius: 5px;
+}
+
+.deletes {
+    transition: ease all 0.5s;
+}
+
+.deletes:hover {
+    transition: ease all 0.5s;
+    cursor: pointer;
+    background-color: orangered !important;
+}
+
+.updates {
+    transition: ease all 0.5s;
+}
+
+.updates:hover {
+    transition: ease all 0.5s;
+    cursor: pointer;
+    background-color: #90D8CA !important;
+}
+
+.xA {
+    padding: 5px;
+    background-color: rgb(231, 231, 231);
+    height: 100%;
+    width: 25%;
+    transition: ease all 1s;
+}
+
+.xB {
+    padding: 5px;
+    background-color: rgb(231, 231, 231);
+    height: 100%;
+    width: 73%;
+}
+
+.hhj {
+    height: 520px;
+    overflow-y: auto;
+}
+
+.hj {
+    height: 440px;
+    overflow-y: auto;
+}
+
+// .xxx {
+//   width: 100%;
+// }

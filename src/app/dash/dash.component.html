@@ -1,0 +1,28 @@
+<div class="cont p-3">
+
+    <div class="a" id="a" [ngStyle]="{'width': _width}">
+
+        <div class="navs" id="navs" [ngStyle]="{'width': _width}">
+            <div [ngStyle]="{'font-size': fontsizeparagraph + 'pt'}" (click)="closeSession()" class="ccesion bg-secondary text-light p-2 d-flex justify-content-lg-start align-items-center p-2 rounded">
+                <mat-icon>dangerous</mat-icon> <span class="mods animate__animated animate__fadeInRight">{{close_title}}</span>
+            </div>
+            <div class="btnnavs" (click)="gestAnimNavs()" id="btnnavs">
+                <mat-icon>{{_close_nav}}</mat-icon>
+            </div>
+            <div (click)="modord(x.name_module)" [ngStyle]="{'background': x.color_module, 'color': _color_button, 'border-radius': _border_rad}" class="mainMods d-flex justify-content-start mt-1 align-items-center p-2" style="cursor: pointer;" *ngFor=" let x of mods ">
+                <mat-icon> {{x.icon_module}} </mat-icon>
+                <div [ngStyle]="{'font-size': fontsizeparagraph + 'pt'}" *ngIf="_name_mod_title">
+                    <span class="mods animate__animated animate__fadeInRight">{{x.name_module}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="a" id="b" [ngStyle]="{'width': _width_b, 'transition': 'ease all 0.5s'}">
+        <app-mycompanies *ngIf="_compan"></app-mycompanies>
+        <app-master-prov *ngIf="_prov"></app-master-prov>
+        <app-gestprods *ngIf="_gest_prod"></app-gestprods>
+        <app-configuraciones *ngIf="_config"></app-configuraciones>
+    </div>
+
+</div>

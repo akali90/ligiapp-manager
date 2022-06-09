@@ -1,0 +1,309 @@
+<div class="title d-flex justify-content-between w-100">
+    <div class="xxx">
+        <h2 class="tih">{{name_companies}}:</h2>
+    </div>
+    <div class="btns d-flex flex-wrap justify-content-end">
+        <button class="btnsdiv d-flex align-items-center" [ngStyle]="{'background-color': _color_btnA, 'border-bottom':'solid 5px ' + _color_bord_A }" (click)="changeModsView(true, false, '#5C277B', '#361E45', '#0EC9BB', 'whitesmoke', true)">
+          <mat-icon [ngStyle]="{'color': _color_bord_A }">add</mat-icon>Registrar
+        </button>
+        <button class="btnsdiv d-flex align-items-center" [ngStyle]="{'background-color': _color_btnB, 'border-bottom':'solid 5px ' + _color_bord_B }" (click)="changeModsView(false, true, '#361E45', '#5C277B', 'whitesmoke', '#0EC9BB', false)">
+          <mat-icon [ngStyle]="{'color': _color_bord_B }" >app_registration</mat-icon>Ingresados
+        </button>
+    </div>
+</div>
+
+<div class="ds animate__animated animate__fadeInRight mt-3" *ngIf="_show_part_ing">
+
+    <div class="sector-img">
+        <div class="inpfile w-100">
+            <label for="img" class="lb w-100">
+              Click en el siguiente recuadro, sube un Logotipo de tu empresa en los siguientes formatos <strong> (.JPG o .PNG): </strong><hr>
+              <div class="img w-100" id="boxImg" ></div>
+            </label><br>
+            <input type="file" (change)="encodeImageFileAsURLA('img', 'boxImg')" id="img" [(ngModel)]="_fServ" name="_fServ" class="inp-control">
+        </div>
+    </div>
+
+    <div class="data">
+        <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Nombre de compañía:</mat-label>
+            <input matInput type="text" [(ngModel)]="_ncompany">
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="w-100">
+            <mat-label>R.U.C.:</mat-label>
+            <input matInput type="text" [(ngModel)]="_ruc">
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Choose a date</mat-label>
+            <input matInput [matDatepicker]="picker" [(ngModel)]="_dateinit">
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="w-100">
+            <mat-label>E-mail:</mat-label>
+            <input matInput type="email" [(ngModel)]="_email">
+        </mat-form-field>
+    </div>
+
+    <div class="data" id="dataA">
+        <div class="d-flex justify-content-between flex-wrap">
+            <mat-form-field appearance="fill" class="inputsResp w-50 p-1">
+                <mat-label>Descripción de compañía:</mat-label>
+                <textarea matInput [(ngModel)]="_descomp"></textarea>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="inputsResp w-50 p-1">
+                <mat-label>Domicilio:</mat-label>
+                <textarea matInput [(ngModel)]="_domicilio"></textarea>
+            </mat-form-field>
+        </div>
+        <div class="d-flex justify-content-between flex-wrap">
+            <mat-form-field appearance="fill" class="inputsResp w-25 p-1">
+                <mat-label>Telf. 1:</mat-label>
+                <input matInput type="text" [(ngModel)]="_telf_a">
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="inputsResp w-25 p-1">
+                <mat-label>Telf. 2:</mat-label>
+                <input matInput type="text" [(ngModel)]="_telf_b">
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="inputsResp w-50 p-1">
+                <mat-label>Institución financiera:</mat-label>
+                <input matInput type="text" [(ngModel)]="institu_fin">
+            </mat-form-field>
+        </div>
+        <div class="d-flex justify-content-between flex-wrap">
+            <mat-form-field appearance="fill" class="inputsResp w-50 p-1">
+                <mat-label>Tipo de cuentas:</mat-label>
+                <input matInput type="text" [(ngModel)]="tipo_cta_ah">
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="inputsResp w-50 p-1">
+                <mat-label>Cuenta ahorro/corriente:</mat-label>
+                <input matInput type="text" [(ngModel)]="_cta_ah">
+            </mat-form-field>
+        </div>
+        <div class="d-flex justify-content-between flex-wrap">
+            <mat-form-field appearance="fill" class="inputsResp w-25 p-1">
+                <mat-label>País:</mat-label>
+                <input matInput type="text" [(ngModel)]="_pais">
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="inputsResp w-25 p-1">
+                <mat-label>Ciudad:</mat-label>
+                <input matInput type="text" [(ngModel)]="_ciudad">
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="inputsResp w-50 p-1">
+                <mat-label>Página web:</mat-label>
+                <input matInput type="text" [(ngModel)]="_webpage">
+            </mat-form-field>
+        </div>
+    </div>
+
+</div>
+<div class="btnsets w-100 mt-3" id="btnset">
+    <button (click)="saveComp()" *ngIf="btnPost" class="w-100 d-flex align-items-center justify-content-center" mat-raised-button color="accent">
+<mat-icon>perm_contact_calendar</mat-icon>Guardar datos de compañía
+</button>
+    <div class="btnsets d-flex" *ngIf="btnPut">
+        <button (click)="updateComp()" class="w-75 d-flex align-items-center justify-content-center" mat-raised-button color="primary">
+  <mat-icon>update</mat-icon>Actualizar
+  </button>
+        <button (click)="cleanUp()" class="w-25 d-flex align-items-center justify-content-center" mat-raised-button color="warn">
+      <mat-icon>cancel</mat-icon>
+  </button>
+    </div>
+</div>
+<div class="ds  animate__animated animate__fadeInRight mt-3" *ngIf="_show_part_reg">
+    <div class="tableFixHead w-100 ">
+        <table>
+            <thead>
+                <tr>
+                    <!-- <th>Codec Cía.</th> -->
+                    <th>Nom. Cia.</th>
+                    <th>Telf. 1</th>
+                    <th>Telf. 2</th>
+                    <th>R.U.C.</th>
+                    <th>I. Financiera</th>
+                    <th>T. Cuenta</th>
+                    <th>N. Cuenta</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let jj of arrComp">
+                    <!-- <td> {{jj.codec_cia}} </td> -->
+                    <td> {{jj.name_cia}} </td>
+                    <td> {{jj.telef_a}} </td>
+                    <td> {{jj.telef_b}} </td>
+                    <td> {{jj.ruc}} </td>
+                    <td> {{jj.insti_fin}} </td>
+                    <td> {{jj.tipo_cuenta}} </td>
+                    <td> {{jj.n_cuenta}} </td>
+                    <td class="deletes" (click)="delComp(jj.id)">
+                        <mat-icon class="text-light">delete_outline</mat-icon>
+                    </td>
+                    <td class="updates" (click)="asignData(jj.image_cia, jj.id, jj.codec_cia, jj.name_cia, jj.descrip_cia,
+                                                     jj.image_cia, jj.date_init, jj.telef_a, jj.telef_b, jj.ciudad_cia,
+                                                     jj.pais_cia, jj.email_cia, jj.web_cia, jj.insti_fin,
+                                                     jj.tipo_cuenta, jj.n_cuenta, jj.ruc, jj.domicilio)">
+                        <mat-icon class="text-light">edit</mat-icon>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- <div class="xxx">
+    <h2>{{name_companies}}:</h2>
+</div>
+
+<hr>
+
+<div class="w-100 d-flex justify-content-between">
+    <div class="xA" [ngStyle]="{'background-color': _colorProv}">
+        <div class="hhj">
+            <div class="inpfile w-100">
+
+                <label for="img" class="lb w-100">
+                  Foto:<hr>
+                  <div class="img w-100" id="boxImg" ></div>
+                </label><br>
+                <input type="file" (change)="encodeImageFileAsURLA('img', 'boxImg')" id="img" [(ngModel)]="_fServ" name="_fServ" class="form-control">
+
+            </div>
+            <mat-form-field appearance="fill" class="w-100">
+                <mat-label>Nombre de compañía:</mat-label>
+                <input matInput type="text" [(ngModel)]="_ncompany">
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="w-100">
+                <mat-label>Descripción de compañía:</mat-label>
+                <textarea matInput [(ngModel)]="_descomp"></textarea>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="w-100">
+                <mat-label>Domicilio:</mat-label>
+                <textarea matInput [(ngModel)]="_domicilio"></textarea>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="w-100">
+                <mat-label>R.U.C.:</mat-label>
+                <input matInput type="text" [(ngModel)]="_ruc">
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="w-100">
+                <mat-label>Choose a date</mat-label>
+                <input matInput [matDatepicker]="picker" [(ngModel)]="_dateinit">
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="w-100">
+                <mat-label>E-mail:</mat-label>
+                <input matInput type="email" [(ngModel)]="_email">
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="w-100">
+                <mat-label>Telf. 1:</mat-label>
+                <input matInput type="text" [(ngModel)]="_telf_a">
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="w-100">
+                <mat-label>Telf. 2:</mat-label>
+                <input matInput type="text" [(ngModel)]="_telf_b">
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="w-100">
+                <mat-label>Institución financiera:</mat-label>
+                <input matInput type="text" [(ngModel)]="institu_fin">
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="w-100">
+                <mat-label>Tipo de cuentas:</mat-label>
+                <input matInput type="text" [(ngModel)]="tipo_cta_ah">
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="w-100">
+                <mat-label>Cuenta ahorro/corriente:</mat-label>
+                <input matInput type="text" [(ngModel)]="_cta_ah">
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="w-100">
+                <mat-label>País:</mat-label>
+                <input matInput type="text" [(ngModel)]="_pais">
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="w-100">
+                <mat-label>Ciudad:</mat-label>
+                <input matInput type="text" [(ngModel)]="_ciudad">
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="w-100">
+                <mat-label>Página web:</mat-label>
+                <input matInput type="text" [(ngModel)]="_webpage">
+            </mat-form-field>
+        </div>
+        <div class="btnsets w-100">
+            <button (click)="saveComp()" *ngIf="btnPost" class="w-100 d-flex align-items-center justify-content-center" mat-raised-button color="accent">
+          <mat-icon>perm_contact_calendar</mat-icon>
+          Guardar datos de compañía
+        </button>
+            <div class="btnsets d-flex" *ngIf="btnPut">
+                <button (click)="updateComp()" class="w-75 d-flex align-items-center justify-content-center" mat-raised-button color="primary">
+              <mat-icon>update</mat-icon>Actualizar
+            </button>
+                <button (click)="cleanUp()" class="w-25 d-flex align-items-center justify-content-center" mat-raised-button color="warn">
+              <mat-icon>cancel</mat-icon>
+            </button>
+            </div>
+        </div>
+    </div>
+    <div class="xB">
+        <mat-tab-group class="w-100">
+
+            <mat-tab label="Compañías ingresadas">
+                <div class="searck">
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Buscador de empresas por nombre (Presione la tecla ENTER):</mat-label>
+                        <input matInput type="text" (keyup.enter)="this.getComp('name_cia', _search, 'desc')" [(ngModel)]="_search">
+                    </mat-form-field>
+                </div>
+                <div class="hj table-responsive">
+                    <table class="table table-dark align-middle table-bordered">
+                        <thead class="bg-dark text-light align-middle ">
+                            <td class="p-2"> Codec Cía. </td>
+                            <td class="p-2"> Nom. Cia. </td>
+                            <td class="p-2"> Teléfono 1 </td>
+                            <td class="p-2"> Teléfono 2 </td>
+                            <td class="p-2"> R.U.C. </td>
+                            <td class="p-2"> I. Financiera </td>
+                            <td class="p-2"> T. Cuenta </td>
+                            <td class="p-2"> N. Cuenta </td>
+                            <td class="p-2">
+                                <mat-icon class="text-light">delete_outline</mat-icon>
+                            </td>
+                            <td class="p-2">
+                                <mat-icon class="text-light">edit</mat-icon>
+                            </td>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let jj of arrComp">
+                                <td> {{jj.codec_cia}} </td>
+                                <td> {{jj.name_cia}} </td>
+                                <td> {{jj.telef_a}} </td>
+                                <td> {{jj.telef_b}} </td>
+                                <td> {{jj.ruc}} </td>
+                                <td> {{jj.insti_fin}} </td>
+                                <td> {{jj.tipo_cuenta}} </td>
+                                <td> {{jj.n_cuenta}} </td>
+                                <td class="deletes" (click)="delComp(jj.id)">
+                                    <mat-icon class="text-light">
+                                        delete_outline
+                                    </mat-icon>
+                                </td>
+                                <td class="updates" (click)="asignData(jj.image_cia, jj.id, jj.codec_cia, jj.name_cia, jj.descrip_cia,
+                                                                       jj.image_cia, jj.date_init, jj.telef_a, jj.telef_b, jj.ciudad_cia,
+                                                                       jj.pais_cia, jj.email_cia, jj.web_cia, jj.insti_fin,
+                                                                       jj.tipo_cuenta, jj.n_cuenta, jj.ruc, jj.domicilio)">
+
+                                    <mat-icon class="text-light">edit</mat-icon>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </mat-tab>
+
+        </mat-tab-group>
+
+
+    </div> -->

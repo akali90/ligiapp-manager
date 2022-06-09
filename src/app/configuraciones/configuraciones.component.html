@@ -1,0 +1,38 @@
+<div class="cont">
+
+    <div class="container-fluid">
+        <div class="title">
+            <h2>Configuraciones:</h2>
+            <hr>
+        </div>
+        <div class="body-conf">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between">
+                    <div>
+                        <label for="customRange3" class="form-label">Tamaño de fuente títulos:<br>
+                            <strong>min: 14pt - max: 26pt</strong>
+                        </label>
+                        <input type="number" (change)="rangeFontSizeTitle()" [(ngModel)]="_ftitle" class="form-control">
+                    </div>
+                    <div>
+                        <label for="customRange3" class="form-label">Tamaño de fuente párrafos:<br>
+                          <strong>min: 9pt - max: ---</strong>
+                        </label>
+                        <input type="number" (change)="rangeFontSizeParagraph()" [(ngModel)]="_fparagraph" class="form-control">
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <span class="notes">
+                      Estamos trabajando para que puedas tener mas skills a configurar.
+                    </span>
+                </li>
+            </ul>
+            <div class="btnsetts">
+                <button mat-raised-button color="primary" (click)="rangeFontSizeTitle(); rangeFontSizeParagraph()">
+                  <mat-icon>save</mat-icon> Guardar cambios
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>

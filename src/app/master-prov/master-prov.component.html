@@ -1,0 +1,518 @@
+<div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="staticBackdropLabel2">
+                    Escoge la compañía a destinar los productos:
+                </h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-dark bg-secondary">
+                        <thead class="bg-secondary text-light">
+                            <td class="p-2">
+                                N. compañía
+                            </td>
+                            <td class="p-2">
+                                Descripción
+                            </td>
+                            <td class="p-2">
+                                País
+                            </td>
+                            <td class="p-2">
+                                Ciudad
+                            </td>
+                            <td></td>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor=" let x of arrComp ">
+                                <td>{{x.name_cia}}</td>
+                                <td>{{x.descrip_cia}}</td>
+                                <td>{{x.pais_cia}}</td>
+                                <td>{{x.ciudad_cia}}</td>
+                                <td class="cur text-info" data-bs-dismiss="modal" (click)="asignCompany(x.codec_cia, x.name_cia)">
+                                    <mat-icon>label_important</mat-icon>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="staticBackdropLabel">Ficha proveedor de {{_type_prov}} para <strong class="text-primary">{{_us_ficha | uppercase}}</strong></h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="getProveedores(_type_prov, 'cod_prov', '_', 'asc', this.xx);"></button>
+            </div>
+            <div class="modal-body d-flex justify-content-between">
+                <div class="provsFicha w-75">
+                    <div *ngIf="_serv_vis">
+                        <div *ngFor="let xxf of proveeArrGet ">
+                            <div class="table-responsive w-100">
+                                <table class="table table-sm caption-top table-bordered border-secondary align-middle w-100">
+                                    <caption>Proveedor:</caption>
+                                    <thead class="table align-middle bg-warning table-bordered border-secondary">
+                                        <td>Cédula o R.U.C.</td>
+                                        <td>Telf.</td>
+                                        <td>Telf2.</td>
+                                        <td>Dirección</td>
+                                        <td>Correo</td>
+                                        <td>País</td>
+                                        <td>Ciudad</td>
+                                        <td>Web Site</td>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{xxf.idpers}}</td>
+                                            <td>{{xxf.telef}}</td>
+                                            <td>{{xxf.telef2}}</td>
+                                            <td>{{xxf.direccion}}</td>
+                                            <td>{{xxf.correo}}</td>
+                                            <td>{{xxf.pais}}</td>
+                                            <td>{{xxf.ciudad}}</td>
+                                            <td>{{xxf.pagweb}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="_prods_vis">
+                        <div *ngFor="let xxg of  proveServArrGet ">
+                            <div class="table-responsive w-100">
+                                <table class="table table-sm caption-top table-bordered border-primary align-middle w-100">
+                                    <caption>Proveedor:</caption>
+                                    <thead class="table align-middle bg-warning table-bordered border-secondary">
+                                        <td>Cédula o R.U.C.</td>
+                                        <td>Telf.</td>
+                                        <td>Telf2.</td>
+                                        <td>Dirección</td>
+                                        <td>Correo</td>
+                                        <td>País</td>
+                                        <td>Ciudad</td>
+                                        <td>Web Site</td>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{xxg.idpers}}</td>
+                                            <td>{{xxg.telef}}</td>
+                                            <td>{{xxg.telef2}}</td>
+                                            <td>{{xxg.direccion}}</td>
+                                            <td>{{xxg.correo}}</td>
+                                            <td>{{xxg.pais}}</td>
+                                            <td>{{xxg.ciudad}}</td>
+                                            <td>{{xxg.pagweb}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" xxtab table-responsive w-100">
+                        <table class="table table-sm caption-top table-bordered border-primary align-middle w-100">
+                            <caption>Servicios <strong>({{cantServs}})</strong>:</caption>
+                            <thead class="table align-middle bg-warning table-bordered border-secondary">
+                                <td>
+                                    <mat-icon>delete</mat-icon>
+                                </td>
+                                <td>
+                                    <mat-icon>edit</mat-icon>
+                                </td>
+                                <td>Nom. Servicio</td>
+                                <td>Descripción</td>
+                                <td>Fec. Inicio</td>
+                                <td>Fec. Final</td>
+                                <td>Días</td>
+                                <td>Observ.</td>
+                                <td>VALOR</td>
+                                <td>IVA</td>
+                                <td>TOTAL</td>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let servs of xArrServs">
+                                    <td (click)="dServices(servs.id, servs.cod_prov)">
+                                        <mat-icon>delete</mat-icon>
+                                    </td>
+                                    <td (click)="asignServices(servs.id, servs.nom_serv, servs.desc_serv, servs.cos_serv, servs.finit, servs.ffinal, servs.cost_add, servs.observ)">
+                                        <mat-icon>edit</mat-icon>
+                                    </td>
+                                    <td>{{servs.nom_serv}}</td>
+                                    <td>{{servs.desc_serv}}</td>
+                                    <td>{{servs.finit | date: 'd/M/yyyy' }}</td>
+                                    <td>{{servs.ffinal | date: 'd/M/yyyy' }}</td>
+                                    <td>{{__days}}</td>
+                                    <td>{{servs.observ}}</td>
+                                    <td>{{servs.cos_serv}}</td>
+                                    <td>{{servs.cost_add}}</td>
+                                    <td>{{((servs.cos_serv * servs.cost_add) / 100) + servs.cos_serv}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="provsFicha">
+                    <div class="cabBtns d-flex">
+                        <div class="note d-flex align-items-center p-2"> Cod. Usuario: {{_codec_us}} </div>
+                        <button class=" d-flex align-items-center justify-content-center" mat-raised-button color="warn" (click)="cleanUp()">
+                      <mat-icon>assignment_ind</mat-icon> Añadir {{_type_prov}}
+                    </button>
+                    </div>
+                    <div class="work mt-2" [ngStyle]="{'background': _colorProv}">
+                        <div class="formsCab d-flex justify-content-between ">
+                            <mat-form-field appearance="fill" class="w-75">
+                                <mat-label>Nombre de servicio:</mat-label>
+                                <input matInput type="text" [(ngModel)]="_nameServ">
+                            </mat-form-field>
+                            <mat-form-field appearance="fill" style="width: 100px;">
+                                <mat-label>Costo:</mat-label>
+                                <input matInput type="number" [(ngModel)]="_cos_serv">
+                            </mat-form-field>
+                        </div>
+                        <mat-form-field appearance="fill" class="w-100">
+                            <mat-label>Descripción de servicio:</mat-label>
+                            <textarea matInput [(ngModel)]="_desc_serv"></textarea>
+                        </mat-form-field>
+                        <div class="d-flex justify-content-between">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Fecha entrega {{_type_prov}}</mat-label>
+                                <mat-date-range-input [rangePicker]="picker">
+                                    <input matStartDate placeholder="Start date" [(ngModel)]="_finit">
+                                    <input matEndDate placeholder="End date" [(ngModel)]="_ffinal">
+                                </mat-date-range-input>
+                                <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill" style="width: 100px;">
+                                <mat-label>I.V.A.:</mat-label>
+                                <input matInput type="number" [(ngModel)]="_cost_add">
+                            </mat-form-field>
+                        </div>
+                        <mat-form-field appearance="fill" class="w-100">
+                            <mat-label>Observaciones:</mat-label>
+                            <textarea matInput [(ngModel)]="_observ"></textarea>
+                        </mat-form-field>
+                    </div>
+                    <div class="btnsets w-100">
+                        <button *ngIf="btnPost" class=" d-flex align-items-center justify-content-center" mat-raised-button color="warn" (click)="saveServs(_codec_us)">
+                      <mat-icon>folder_special</mat-icon> Guardar {{_type_prov}}
+                    </button>
+
+                        <div class="btnsets d-flex" *ngIf="btnPut">
+                            <button class=" d-flex align-items-center justify-content-center" mat-raised-button color="primary" (click)="putServices(_codec_us, _id_servs)">
+                              <mat-icon>update</mat-icon> Actualizar {{_type_prov}} - Id. Serv.: ({{_id_servs}})
+                            </button>
+                            <button class="w-25 d-flex align-items-center justify-content-center" mat-raised-button color="warn" (click)="cleanUp()">
+                              <mat-icon>cancel</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" (click)="getProveedores(_type_prov, 'cod_prov', '_', 'asc', this.xx);" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="title d-flex justify-content-between w-100">
+    <div class="xxx">
+        <h2 class="tih">Maestro de proveedores:</h2>
+        <!-- <h2 class="tih">{{name_companies}}:</h2> -->
+    </div>
+    <div class="btns d-flex flex-wrap justify-content-end">
+        <button class="btnsdiv d-flex align-items-center" [ngStyle]="{'background-color': _color_btnA, 'border-bottom':'solid 5px ' + _color_bord_A }" (click)="changeModsView(true, false, '#5C277B', '#361E45', '#0EC9BB', 'whitesmoke', true)">
+        <mat-icon [ngStyle]="{'color': _color_bord_A }">add</mat-icon>Registrar
+      </button>
+        <button class="btnsdiv d-flex align-items-center" [ngStyle]="{'background-color': _color_btnB, 'border-bottom':'solid 5px ' + _color_bord_B }" (click)="changeModsView(false, true, '#361E45', '#5C277B', 'whitesmoke', '#0EC9BB', false)">
+        <mat-icon [ngStyle]="{'color': _color_bord_B }" >app_registration</mat-icon>Ingresados
+      </button>
+    </div>
+</div>
+
+<div class="ds animate__animated animate__fadeInRight mt-3" *ngIf="_show_part_ing">
+    <!-- <div class="sector-img">
+        <div class="inpfile w-100">
+            <label for="img" class="lb w-100">
+            Click en el siguiente recuadro, sube un Logotipo de tu empresa en los siguientes formatos <strong> (.JPG o .PNG): </strong><hr>
+            <div class="img w-100" id="boxImg" ></div>
+          </label><br>
+            <input type="file" (change)="encodeImageFileAsURLA('img', 'boxImg')" id="img" [(ngModel)]="_fServ" name="_fServ" class="inp-control">
+        </div>
+    </div> -->
+    <div class="comps w-100 m-2 bg-secondary p-1 text-light" style="height: 70px;">
+        <span class="p-3">Mi empresa: <strong>{{labelMessage | uppercase}}</strong></span>
+        <button *ngIf="btnPost" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" class="w-100 d-flex align-items-center justify-content-center" mat-raised-button color="warn">
+        <mat-icon>leaderboard</mat-icon>Escoger mi compañía
+      </button>
+    </div>
+    <div class="d-flex justify-content-between flex-wrap w-100">
+
+        <mat-form-field appearance="fill" class="inputsResp w-25 p-1">
+            <mat-label>Tipo de proveedor:</mat-label>
+            <mat-select [disabled]="_lock">
+                <mat-option *ngFor="let x of foods" (click)="capturar(x.value)" [value]="x.value">
+                    {{x.viewValue}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="inputsResp w-50 p-1">
+            <mat-label>Nombre de proveedor:</mat-label>
+            <input matInput type="text" [disabled]="_lock" [(ngModel)]="_nameProv">
+        </mat-form-field>
+
+        <div class="d-flex justify-content-between flex-wrap w-100 align-items-center">
+            <mat-form-field appearance="fill" class="inputsResp p-1" style="width: 30%">
+                <mat-label>I.D.:</mat-label>
+                <input matInput type="text" [disabled]="_lock" [(ngModel)]="_cedula">
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="inputsResp p-1" style="width: 30%">
+                <mat-label>Teléfono A:</mat-label>
+                <input matInput type="text" [disabled]="_lock" [(ngModel)]="_telfA">
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="inputsResp p-1" style="width: 30%">
+                <mat-label>Teléfono B:</mat-label>
+                <input matInput type="text" [disabled]="_lock" [(ngModel)]="_telfB">
+            </mat-form-field>
+        </div>
+        <mat-form-field appearance="fill" class="inputsResp w-50 p-1">
+            <mat-label>Dirección:</mat-label>
+            <textarea matInput [disabled]="_lock" [(ngModel)]="_direcc"></textarea>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class=" inputsResp w-25 p-1">
+            <mat-label>E-mail:</mat-label>
+            <input matInput type="email" [disabled]="_lock" [(ngModel)]="_mail">
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="inputsResp w-25 p-1">
+            <mat-label>País:</mat-label>
+            <input matInput type="text" [disabled]="_lock" [(ngModel)]="_pais">
+        </mat-form-field>
+        <mat-form-field appearance="fill" class=" inputsResp w-25 p-1">
+            <mat-label>Ciudad:</mat-label>
+            <input matInput type="text" [disabled]="_lock" [(ngModel)]="_ciudad">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="inputsResp  w-25 p-1">
+            <mat-label>Página web:</mat-label>
+            <input matInput type="text" [disabled]="_lock" [(ngModel)]="_web">
+        </mat-form-field>
+    </div>
+</div>
+<div class="btnsets w-100 mt-3" id="btnset">
+    <button (click)="saveProveedor()" *ngIf="btnPost" class="w-100 d-flex align-items-center justify-content-center" mat-raised-button color="accent">
+<mat-icon>perm_contact_calendar</mat-icon>Guardar datos de proveedor
+</button>
+    <div class="btnsets d-flex" *ngIf="btnPut">
+        <button (click)="  upProv()" class="w-75 d-flex align-items-center justify-content-center" mat-raised-button color="primary">
+<mat-icon>update</mat-icon>Actualizar
+</button>
+        <button (click)="cleanUp()" class="w-25 d-flex align-items-center justify-content-center" mat-raised-button color="warn">
+    <mat-icon>cancel</mat-icon>
+</button>
+    </div>
+</div>
+<div class="ds  animate__animated animate__fadeInRight mt-3" *ngIf="_show_part_reg">
+
+    <div class="contsss w-100 d-flex justify-content-between" *ngIf="bool_A">
+        <div class="xB">
+            <mat-tab-group class="w-100">
+                <mat-tab label="Proveedor de servicios">
+                    <div class="searck">
+                        <mat-form-field appearance="fill" class="w-100">
+                            <mat-label>Buscador de proveedores de servicios por nombre (Presione la tecla ENTER):</mat-label>
+                            <input matInput type="search" [(ngModel)]="_search" (keyup.enter)="this.getProveedores('servicios', 'nom_prov', _search, 'asc', this.xx);">
+                        </mat-form-field>
+                    </div>
+                    <div class="hj table-responsive">
+                        <table class="table table-dark align-middle table-bordered">
+                            <thead class="bg-dark text-light align-middle ">
+                                <td class="p-2"> Nom. Proveedor</td>
+                                <td class="p-2"> Teléfono</td>
+                                <td class="p-2"> Dirección</td>
+                                <td class="p-2"> Ciudad</td>
+                                <td class="p-2">
+                                    <mat-icon class="text-secondary">delete_outline</mat-icon>
+                                </td>
+                                <td class="p-2">
+                                    <mat-icon class="text-secondary">edit</mat-icon>
+                                </td>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let aa of proveeArrGet">
+                                    <td (click)="genType(aa.tipo, aa.nom_prov, aa.cod_prov)">
+                                        <div data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="ddMOd d-flex align-items-center h-100 justify-content-start">
+                                            <mat-icon>elevator</mat-icon> {{aa.nom_prov}}
+                                        </div>
+                                    </td>
+                                    <td> {{aa.telef}} </td>
+                                    <td> {{aa.direccion}} </td>
+                                    <td> {{aa.ciudad}} </td>
+                                    <td class="deletes" (click)="deleteProv(aa.cod_prov)">
+                                        <mat-icon class="text-light">delete_outline</mat-icon>
+                                    </td>
+                                    <td class="updates" (click)="asignData(aa.id, aa.cod_prov, aa.tipo, aa.nom_prov, aa.idpers, aa.telef, aa.telef2, aa.direccion, aa.correo, aa.ciudad, aa.pais, aa.pagweb)">
+                                        <mat-icon class="text-light">edit</mat-icon>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </mat-tab>
+
+                <mat-tab label="Proveedor de Bienes (Productos...)">
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Buscador de proveedores de materiales por nombre (Presione la tecla ENTER):</mat-label>
+                        <input matInput type="text" [(ngModel)]="_search" (keyup.enter)="this.getProveedores('materiales', 'nom_prov', _search, 'asc', this.xx);">
+                    </mat-form-field>
+                    <div class="hj table-responsive">
+                        <table class="table table-dark align-middle table-bordered">
+                            <thead class="bg-dark text-light align-middle ">
+                                <td class="p-2"> Nom. Proveedor</td>
+                                <td class="p-2"> Teléfono</td>
+                                <td class="p-2"> Dirección</td>
+                                <td class="p-2"> Ciudad</td>
+                                <td class="p-2">
+                                    <mat-icon class="text-secondary">delete_outline</mat-icon>
+                                </td>
+                                <td class="p-2">
+                                    <mat-icon class="text-secondary">edit</mat-icon>
+                                </td>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let ab of proveServArrGet">
+                                    <td (click)="genType(ab.tipo, ab.nom_prov, ab.cod_prov)">
+                                        <div data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="ddMOd d-flex align-items-center h-100 justify-content-start">
+                                            <mat-icon>elevator</mat-icon> {{ab.nom_prov}}
+                                        </div>
+                                    </td>
+                                    <td> {{ab.telef}} </td>
+                                    <td> {{ab.direccion}} </td>
+                                    <td> {{ab.ciudad}} </td>
+                                    <td class="deletes" (click)="deleteProv(ab.cod_prov)">
+                                        <mat-icon class="text-light">delete_outline</mat-icon>
+                                    </td>
+                                    <td class="updates" (click)="asignData(ab.id, ab.cod_prov, ab.tipo, ab.nom_prov, ab.idpers, ab.telef, ab.telef2, ab.direccion, ab.correo, ab.ciudad, ab.pais, ab.pagweb)">
+                                        <mat-icon class="text-light">edit</mat-icon>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </mat-tab>
+
+            </mat-tab-group>
+
+
+        </div>
+    </div>
+
+    <div class="w-100" *ngIf="true">
+
+        <div class="xB">
+            <mat-tab-group class="w-100">
+
+                <mat-tab label="Proveedor de servicios">
+                    <div class="searck">
+                        <mat-form-field appearance="fill" class="w-100">
+                            <mat-label>Buscador de proveedores de servicios por nombre (Presione la tecla ENTER):</mat-label>
+                            <input matInput type="text" [(ngModel)]="_search" (keyup.enter)="this.getProveedores('servicios', 'nom_prov', _search, 'asc', this.xx);">
+                        </mat-form-field>
+                    </div>
+                    <div class="tableFixHead w-100 ">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <!-- <th>Codec Cía.</th> -->
+                                    <th class="p-2"> Nom. Proveedor</th>
+                                    <th class="p-2"> Teléfono</th>
+                                    <th class="p-2"> Dirección</th>
+                                    <th class="p-2"> Ciudad</th>
+                                    <th class="p-2">
+                                        <mat-icon class="text-secondary">delete_outline</mat-icon>
+                                    </th>
+                                    <th class="p-2">
+                                        <mat-icon class="text-secondary">edit</mat-icon>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let aa of proveeArrGet">
+                                    <td (click)="genType(aa.tipo, aa.nom_prov, aa.cod_prov)">
+                                        <div data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="ddMOd d-flex align-items-center h-100 justify-content-start">
+                                            <mat-icon>elevator</mat-icon> {{aa.nom_prov}}
+                                        </div>
+                                    </td>
+                                    <td> {{aa.telef}} </td>
+                                    <td> {{aa.direccion}} </td>
+                                    <td> {{aa.ciudad}} </td>
+                                    <td class="deletes" (click)="deleteProv(aa.cod_prov)">
+                                        <mat-icon class="text-light">delete_outline</mat-icon>
+                                    </td>
+                                    <td class="updates" (click)="asignData(aa.id, aa.cod_prov, aa.tipo, aa.nom_prov, aa.idpers, aa.telef, aa.telef2, aa.direccion, aa.correo, aa.ciudad, aa.pais, aa.pagweb)">
+                                        <mat-icon class="text-light">edit</mat-icon>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </mat-tab>
+
+                <mat-tab label="Proveedor de Bienes (Productos...)">
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Buscador de proveedores de materiales por nombre (Presione la tecla ENTER):</mat-label>
+                        <input matInput type="text" [(ngModel)]="_search" (keyup.enter)="this.getProveedores('materiales', 'nom_prov', _search, 'asc', this.xx);">
+                    </mat-form-field>
+                    <div class="tableFixHead w-100 ">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <!-- <th>Codec Cía.</th> -->
+                                    <th class="p-2"> Nom. Proveedor</th>
+                                    <th class="p-2"> Teléfono</th>
+                                    <th class="p-2"> Dirección</th>
+                                    <th class="p-2"> Ciudad</th>
+                                    <th class="p-2">
+                                        <mat-icon class="text-light">delete_outline</mat-icon>
+                                    </th>
+                                    <th class="p-2">
+                                        <mat-icon class="text-light">edit</mat-icon>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let ab of proveServArrGet">
+                                    <td (click)="genType(ab.tipo, ab.nom_prov, ab.cod_prov)">
+                                        <div data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="ddMOd d-flex align-items-center h-100 justify-content-start">
+                                            <mat-icon>elevator</mat-icon> {{ab.nom_prov}}
+                                        </div>
+                                    </td>
+                                    <td> {{ab.telef}} </td>
+                                    <td> {{ab.direccion}} </td>
+                                    <td> {{ab.ciudad}} </td>
+                                    <td class="deletes" (click)="deleteProv(ab.cod_prov)">
+                                        <mat-icon class="text-light">delete_outline</mat-icon>
+                                    </td>
+                                    <td class="updates" (click)="asignData(ab.id, ab.cod_prov, ab.tipo, ab.nom_prov, ab.idpers, ab.telef, ab.telef2, ab.direccion, ab.correo, ab.ciudad, ab.pais, ab.pagweb)">
+                                        <mat-icon class="text-light">edit</mat-icon>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+
+    </div>

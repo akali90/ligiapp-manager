@@ -1,0 +1,126 @@
+.navs {
+    height: 100%;
+    background-color: whitesmoke;
+    width: 300px;
+    padding: 15px;
+}
+
+.a {
+    height: 100%;
+    box-shadow: 10px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.cont {
+    display: flex;
+    justify-content: space-between;
+}
+
+.mainMods {
+    background-color: rgb(216, 216, 216);
+    border-radius: 10px;
+    transition: ease all 0.5s;
+}
+
+.mainMods:hover {
+    transition: ease all 0.5s;
+    background-color: rgb(14, 184, 184);
+    color: rgb(23, 114, 116);
+    transition: ease all 1s;
+}
+
+#b {
+    background-color: whitesmoke;
+    width: 75%;
+    padding: 15px;
+}
+
+.deletes {
+    transition: ease all 0.5s;
+}
+
+.deletes:hover {
+    transition: ease all 0.5s;
+    cursor: pointer;
+    background-color: orangered !important;
+}
+
+.updates {
+    transition: ease all 0.5s;
+}
+
+.updates:hover {
+    transition: ease all 0.5s;
+    cursor: pointer;
+    background-color: #90D8CA !important;
+}
+
+.xA {
+    padding: 5px;
+    background-color: rgb(231, 231, 231);
+    height: 100%;
+    width: 25%;
+    transition: ease all 1s;
+}
+
+.xB {
+    padding: 5px;
+    background-color: rgb(231, 231, 231);
+    height: 100%;
+    width: 73%;
+}
+
+.hhj {
+    height: 520px;
+    overflow-y: auto;
+}
+
+.hj {
+    height: 440px;
+    overflow-y: auto;
+}
+
+.ddMOd {
+    font-size: 9pt;
+    transition: ease all 0.5s;
+}
+
+.ddMOd:hover {
+    cursor: pointer;
+    transition: ease all 0.5s;
+    color: #90D8CA;
+}
+
+::ng-deep.cdk-overlay-container {
+    z-index: 9000;
+}
+
+.xxtab {
+    height: 410px;
+    overflow: auto;
+}
+
+// .xxx {
+//   width: 100%;
+// }
+.img {
+    width: 290px;
+    height: 260px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    border: solid 1px gray;
+}
+
+.imgicon {
+    width: 55px;
+    height: 55px;
+    border: solid 1px white;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    border: solid 1px gray;
+}
+
+.iconimg {
+    width: 45px;
+    height: 45px;
+    background-size: 100%;
+}
