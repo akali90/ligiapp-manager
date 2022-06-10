@@ -5,6 +5,7 @@ import { MycompaniesService } from '../mycompanies.service';
 import Swal from 'sweetalert2'
 import { TokengenerateService } from '../tokengenerate.service';
 import { PopUpModsService } from '../popup/pop-up-mods.service';
+import { CountriesrestapiService } from '../countriesrestapi.service';
 
 const Toast = Swal.mixin({
   toast: true,
@@ -53,7 +54,7 @@ export class MycompaniesComponent implements OnInit {
   public _color_bord_A: string = '#0EC9BB';
   public _color_bord_B: string = 'transparent';
 
-  constructor( public popUp: PopUpModsService, public compan: MycompaniesService, public tk: TokengenerateService ) { }
+  constructor( public countries: CountriesrestapiService, public popUp: PopUpModsService, public compan: MycompaniesService, public tk: TokengenerateService ) { }
 
   ngOnInit(): void {
 
@@ -61,6 +62,32 @@ export class MycompaniesComponent implements OnInit {
     this.getComp();
 
   }
+
+  // API PARA RELLENO DE PAISES
+  //------------------------------------------------------------------
+  public countriesArr: any = [];
+  public _name_countrie: string = '';
+  public cant_paises: number = 0;
+  getCountries() {
+    console.log('paises')
+    this.countries.getApiRestCountries().subscribe( countries => {
+      this.countriesArr = countries;
+      this.cant_paises = this.countriesArr.length;
+      // console.log(this.countriesArr);
+    })
+  }
+
+  asignCountries(countrie: string) {
+    this._pais = countrie;
+  }
+
+  getNameCountries(name: string) {
+    this.countries.getApiRestCountriesByName(name).subscribe( countriesn => {
+      this.countriesArr = countriesn;
+      console.log(this.countriesArr);
+    })
+  }
+  //------------------------------------------------------------------
 
 
   //#region INTERFAZ GENERA FUNCIONAMIENTO INICIO

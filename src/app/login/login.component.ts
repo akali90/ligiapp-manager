@@ -146,16 +146,19 @@ export class LoginComponent implements OnInit {
       },
       complete: () => {
 
-        this.sendMail(
-          'andrenimacion@gmail.com',
-          'Autenticación de cuenta casi listo',
-          'De click en el siguiente enlace para terminar el proceso de creación de cuenta'
-        )
 
+        /* EN LA PRÓXIMA VERSIÓN EJECUTAR EL LANZADOR DE EMAILS
+        --------------------------------------------------------------------------------------*/
+        // this.sendMail(
+        //   'andrenimacion@gmail.com',
+        //   'Autenticación de cuenta casi listo',
+        //   'De click en el siguiente enlace para terminar el proceso de creación de cuenta'
+        // )
+        /*------------------------------------------------------------------------------------*/
         sessionStorage.setItem('User',  this.us.nombre);
         sessionStorage.setItem('Token', this.us.token_us);
 
-        // this.router.navigate(['/Dash']);
+        this.router.navigate(['/Dash']);
 
         Toast.fire({
           icon: 'success',

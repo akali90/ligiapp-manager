@@ -9,7 +9,7 @@
             </div>
             <div class="modal-body">
                 <div class="table-responsive">
-                    <table class="table table-dark bg-secondary">
+                    <table class="table">
                         <thead class="bg-secondary text-light">
                             <td class="p-2">
                                 N. compañía
@@ -26,7 +26,7 @@
                             <td></td>
                         </thead>
                         <tbody>
-                            <tr *ngFor=" let x of arrComp ">
+                            <tr class="asignData" *ngFor=" let x of arrComp " data-bs-dismiss="modal" (click)="asignCompany(x.codec_cia, x.name_cia)">
                                 <td>{{x.name_cia}}</td>
                                 <td>{{x.descrip_cia}}</td>
                                 <td>{{x.pais_cia}}</td>

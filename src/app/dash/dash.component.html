@@ -1,20 +1,54 @@
 <div class="cont p-3">
 
     <div class="a" id="a" [ngStyle]="{'width': _width}">
-
         <div class="navs" id="navs" [ngStyle]="{'width': _width}">
+
             <div [ngStyle]="{'font-size': fontsizeparagraph + 'pt'}" (click)="closeSession()" class="ccesion bg-secondary text-light p-2 d-flex justify-content-lg-start align-items-center p-2 rounded">
                 <mat-icon>dangerous</mat-icon> <span class="mods animate__animated animate__fadeInRight">{{close_title}}</span>
             </div>
+
             <div class="btnnavs" (click)="gestAnimNavs()" id="btnnavs">
                 <mat-icon>{{_close_nav}}</mat-icon>
             </div>
-            <div (click)="modord(x.name_module)" [ngStyle]="{'background': x.color_module, 'color': _color_button, 'border-radius': _border_rad}" class="mainMods d-flex justify-content-start mt-1 align-items-center p-2" style="cursor: pointer;" *ngFor=" let x of mods ">
-                <mat-icon> {{x.icon_module}} </mat-icon>
+
+            <!-- (click)="modord(x.name_module)" -->
+
+            <div *ngFor="let x of maestros" (click)="getModuless(1.1); _cont_master_bool = !_cont_master_bool" [ngStyle]="{'background': x.color_module, 'color': x.fg_module, 'border-radius': _border_rad}" class="mainMods d-flex justify-content-start mt-1 align-items-center p-2"
+                style="cursor: pointer;">
+                <mat-icon [ngStyle]="{'color': x.fg_module}"> {{x.icon_module}} </mat-icon>
                 <div [ngStyle]="{'font-size': fontsizeparagraph + 'pt'}" *ngIf="_name_mod_title">
                     <span class="mods animate__animated animate__fadeInRight">{{x.name_module}}</span>
                 </div>
             </div>
+
+            <div *ngIf="_cont_master_bool" class="animate__animated animate__fadeInDown p-2">
+                <div (click)="modord(x.name_module)" class="cont_mods d-flex justify-content-between align-items-center p-1" *ngFor="let x of contMaestros">
+                    <mat-icon style="font-size: 15pt;"> {{x.icon_module}} </mat-icon>
+                    <div [ngStyle]="{'font-size': fontsizeparagraph + 'pt'}" *ngIf="_name_mod_title">
+                        <span class="mods animate__animated animate__fadeInRight">{{x.name_module}}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngFor="let a of acciones" (click)="getModuless(2.1); _cont_accion_bool = !_cont_accion_bool" [ngStyle]="{'background': a.color_module, 'color': a.fg_module, 'border-radius': _border_rad}" class="mainMods d-flex justify-content-start mt-1 align-items-center p-2"
+                style="cursor: pointer;">
+                <mat-icon [ngStyle]="{'color': a.fg_module}"> {{a.icon_module}} </mat-icon>
+                <div [ngStyle]="{'font-size': fontsizeparagraph + 'pt'}" *ngIf="_name_mod_title">
+                    <span class="mods animate__animated animate__fadeInRight">{{a.name_module}}</span>
+                </div>
+            </div>
+
+            <div *ngIf="_cont_accion_bool" class="animate__animated animate__fadeInDown p-2">
+                <div class="cont_mods d-flex justify-content-between align-items-center p-1" *ngFor="let ct of contacciones">
+                    <mat-icon style="font-size: 15pt;"> {{ct.icon_module}} </mat-icon>
+                    <div [ngStyle]="{'font-size': fontsizeparagraph + 'pt'}" *ngIf="_name_mod_title">
+                        <span class="mods animate__animated animate__fadeInRight">{{ct.name_module}}</span>
+                    </div>
+                </div>
+            </div>
+
+
+
         </div>
     </div>
 

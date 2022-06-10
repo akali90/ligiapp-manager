@@ -21,6 +21,7 @@ const Toast = Swal.mixin({
   templateUrl: './dash.component.html',
   styleUrls: ['./dash.component.scss']
 })
+
 export class DashComponent implements OnInit {
 
   public datos: any = [];
@@ -46,11 +47,12 @@ export class DashComponent implements OnInit {
     let xy: any = localStorage.getItem('module-active');
     console.log(this.fontsizetitle = sessionStorage.getItem('font-size-title'));
     console.log(this.fontsizeparagraph = sessionStorage.getItem('font-size-paragraph'));
-    this.getModuless();
+    this.getModuless(1);
+    this.getModuless(2);
+    this.getModuless(3);
     this.setModuleActive(xy);
-    // this.getProveedores('servicios', 'cod_prov', '_', 'asc');
-    // this.getProveedores('materiales', 'cod_prov', '_', 'asc');
   }
+
   public xs: boolean = false;
   public _width: string = '175px';
   public _width_b: string = '75%';
@@ -59,6 +61,7 @@ export class DashComponent implements OnInit {
   public _color_button: string = '';
   public _box_shadows: string = '';
   public _border_rad: string = '5px';
+
   gestAnimNavs() {
 
     let xsubnav: any = document.getElementById('a');
@@ -66,6 +69,7 @@ export class DashComponent implements OnInit {
     let btnnavs: any = document.getElementById('btnnavs');
 
     switch(this.xs) {
+
       case false:
         this.xs = true;
         this._close_nav = 'chevron_right';
@@ -82,6 +86,7 @@ export class DashComponent implements OnInit {
         this._box_shadows = '0px 5px 10px rgba(0,0,0,0.5px)';
         this._border_rad = '20px';
         break;
+
       case true:
         this.xs = false;
         this._close_nav = 'chevron_left';
@@ -98,6 +103,7 @@ export class DashComponent implements OnInit {
         this._box_shadows = '0px 5px 10px rgba(0,0,0,0.5px)';
         this._border_rad = '5px';
       break;
+
     }
 
   }
@@ -189,13 +195,60 @@ export class DashComponent implements OnInit {
 
   }
 
-  getModuless() {
-    this.Mods.getModules(1).subscribe({
-      next: (m) => {
-        this.mods = m;
-        // console.log(this.mods);
-      }
-    });
+  public maestros: any = [];
+  public contMaestros: any = [];
+  public acciones: any = [];
+  public contacciones: any = [];
+  public configuraciones: any = [];
+
+  public _cont_master_bool: boolean = false;
+  public _cont_accion_bool: boolean = false;
+
+  getModuless(mod: number) {
+    let xuser : any = sessionStorage.getItem('Token');
+    switch (mod) {
+      case 1:
+        // Maestros
+        this.Mods.getModules(1, xuser).subscribe({
+          next: (mast) => {
+            this.maestros = mast;
+          }
+        });
+        break;
+      case 1.1:
+        // Maestros
+        this.Mods.getModules(1.1, xuser).subscribe({
+          next: (mast) => {
+            this.contMaestros = mast;
+          }
+        });
+        break;
+      case 2:
+        // Acciones
+        this.Mods.getModules(2, xuser).subscribe({
+          next: (acc) => {
+            this.acciones = acc;
+            console.log(this.acciones);
+          }
+        });
+        break;
+      case 2.1:
+        // Acciones
+        this.Mods.getModules(2.1, xuser).subscribe({
+          next: (cacc) => {
+            this.contacciones = cacc;
+            console.log(this.contacciones);
+          }
+        });
+        break;
+      case 3:
+        this.Mods.getModules(3, xuser).subscribe({
+          next: (conf) => {
+            this.configuraciones = conf;
+          }
+        });
+        break;
+    }
   }
 
   verification() {
@@ -219,11 +272,11 @@ export class DashComponent implements OnInit {
 
     this.setModuleActive(modulo);
 
-    this.Mods.ordModules(modulo).subscribe({
-      next: (modu) => {
-        this.mods = modu;
-      }
-    })
+    // this.Mods.ordModules(modulo).subscribe({
+    //   next: (modu) => {
+    //     this.mods = modu;
+    //   }
+    // })
 
   }
 

@@ -1,3 +1,60 @@
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCountriess" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Escojer un país:</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="search d-flex align-items-center">
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Nombre de país a filtrar: ({{cant_paises}}) </mat-label>
+                        <input matInput type="text" (keyup)="getNameCountries(_name_countrie)" [(ngModel)]="_name_countrie">
+                    </mat-form-field>
+                    <!-- <button>
+                      <mat-icon>search</mat-icon>
+                    </button> -->
+                </div>
+                <div class="tableFixHead w-100 ">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let jj of countriesArr" (click)="asignCountries(jj.name.common)" data-bs-dismiss="modal">
+                                <td class="asignData d-flex align-items-center">
+                                    <div class="p-1">
+                                        <img [src]="jj.flags.png" width="25px" height="auto">
+                                    </div>
+                                    <span class="p-1">
+                                      {{jj.name.common}}
+                                    </span>
+                                </td>
+
+                                <!--<td> {{jj.telef_a}} </td>
+                            <td> {{jj.telef_b}} </td>
+                            <td> {{jj.ruc}} </td>
+                            <td> {{jj.insti_fin}} </td>
+                            <td> {{jj.tipo_cuenta}} </td>
+                            <td> {{jj.n_cuenta}} </td> -->
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="title d-flex justify-content-between w-100">
     <div class="xxx">
         <h2 class="tih">{{name_companies}}:</h2>
@@ -84,7 +141,7 @@
         <div class="d-flex justify-content-between flex-wrap">
             <mat-form-field appearance="fill" class="inputsResp w-25 p-1">
                 <mat-label>País:</mat-label>
-                <input matInput type="text" [(ngModel)]="_pais">
+                <input matInput type="text" (keyup)="getCountries()" data-bs-toggle="modal" data-bs-target="#exampleModalCountriess" (click)="getCountries()" [(ngModel)]="_pais">
             </mat-form-field>
             <mat-form-field appearance="fill" class="inputsResp w-25 p-1">
                 <mat-label>Ciudad:</mat-label>
@@ -117,6 +174,8 @@
             <thead>
                 <tr>
                     <!-- <th>Codec Cía.</th> -->
+                    <th></th>
+                    <th></th>
                     <th>Nom. Cia.</th>
                     <th>Telf. 1</th>
                     <th>Telf. 2</th>
@@ -124,20 +183,11 @@
                     <th>I. Financiera</th>
                     <th>T. Cuenta</th>
                     <th>N. Cuenta</th>
-                    <th></th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let jj of arrComp">
                     <!-- <td> {{jj.codec_cia}} </td> -->
-                    <td> {{jj.name_cia}} </td>
-                    <td> {{jj.telef_a}} </td>
-                    <td> {{jj.telef_b}} </td>
-                    <td> {{jj.ruc}} </td>
-                    <td> {{jj.insti_fin}} </td>
-                    <td> {{jj.tipo_cuenta}} </td>
-                    <td> {{jj.n_cuenta}} </td>
                     <td class="deletes" (click)="delComp(jj.id)">
                         <mat-icon class="text-light">delete_outline</mat-icon>
                     </td>
@@ -147,6 +197,13 @@
                                                      jj.tipo_cuenta, jj.n_cuenta, jj.ruc, jj.domicilio)">
                         <mat-icon class="text-light">edit</mat-icon>
                     </td>
+                    <td> {{jj.name_cia}} </td>
+                    <td> {{jj.telef_a}} </td>
+                    <td> {{jj.telef_b}} </td>
+                    <td> {{jj.ruc}} </td>
+                    <td> {{jj.insti_fin}} </td>
+                    <td> {{jj.tipo_cuenta}} </td>
+                    <td> {{jj.n_cuenta}} </td>
                 </tr>
             </tbody>
         </table>

@@ -15,10 +15,31 @@ body {
     align-items: center;
 }
 
-// #btnset {
-//     width: 100%;
-//     position: absolute;
-// }
+.cont_mods {
+    transition: ease all 1s;
+    cursor: pointer;
+    font-size: 8pt;
+    border-bottom: solid 1px gray;
+}
+
+.asignData {
+    transition: ease all 0.8s;
+}
+
+.asignData:hover {
+    transition: ease all 0.8s;
+    cursor: pointer;
+    background-color: #c4c4c4;
+}
+
+.cont_mods:hover {
+    justify-content: flex-start;
+    transition: ease all 0.5s;
+    background-color: #322f34;
+    color: white;
+    border-radius: 5px;
+}
+
 .tih {
     padding-left: 15px !important;
 }
@@ -181,7 +202,6 @@ body {
 
 @media screen and (max-width: 750px) {
     .sector-img {
-        // border: solid 1px gray;
         width: 100%;
     }
     .data {

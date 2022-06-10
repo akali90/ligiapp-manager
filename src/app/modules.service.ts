@@ -12,8 +12,8 @@ export class ModulesService {
   public env: any = environment
   private apiUrl: any = this.env.apiUrl
 
-  getModules(estado:number) {
-    return this.http.get( this.apiUrl + 'ModTab/sel_ModTab/' + estado )
+  getModules(estado:number, token: string) {
+    return this.http.get( this.apiUrl + 'ModTab/sel_ModTab/' + token + '/' + estado );
   }
 
   ordModules( modulo: string ) {
