@@ -1,3 +1,7 @@
+<div class="portSinner" *ngIf="_show_spinner">
+    <app-spinner></app-spinner>
+</div>
+
 <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -54,7 +58,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="getProveedores(_type_prov, 'cod_prov', '_', 'asc', this.xx);"></button>
             </div>
             <div class="modal-body d-flex justify-content-between">
-                <div class="provsFicha w-75">
+                <div class="provsFicha w-100">
                     <div *ngIf="_serv_vis">
                         <div *ngFor="let xxf of proveeArrGet ">
                             <div class="table-responsive w-100">
@@ -117,7 +121,74 @@
                             </div>
                         </div>
                     </div>
-                    <div class=" xxtab table-responsive w-100">
+                    <div class=" xxtab table-responsive d-flex flex-column w-100">
+                        <div class="btn btn-success p-1 mt-1" style="float: right;" (click)="_bool_des_server = !_bool_des_server; btnPost = true">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <mat-icon>add_circle</mat-icon> Agregar servicios a este proveedor
+                            </div>
+                        </div>
+                        <div *ngIf="_bool_des_server" class="p-2">
+                            <!-- <div class="cabBtns d-flex">
+                                <div class="note d-flex align-items-center p-2"> Cod. Usuario: {{_codec_us}} </div>
+                                <button class=" d-flex align-items-center justify-content-center" mat-raised-button color="warn" (click)="cleanUp()">
+                                  <mat-icon>assignment_ind</mat-icon> Añadir {{_type_prov}}
+                                </button>
+                            </div> -->
+                            <div class="work p-3 rounded-2 mt-2 animate__animated animate__fadeInDown" [ngStyle]="{'background': _colorProv}">
+                                <div class="m-3 ">
+                                    <span class="d-flex align-items-center">
+                                      <mat-icon>warning</mat-icon>  Agregue el detalle del servicio a este proveedor:
+                                    </span>
+                                </div>
+                                <div class="formsCab d-flex flex-wrap justify-content-between ">
+                                    <mat-form-field appearance="fill">
+                                        <mat-label>Nombre de servicio:</mat-label>
+                                        <input matInput type="text" [(ngModel)]="_nameServ">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="fill" style="width: 100px;">
+                                        <mat-label>Días:</mat-label>
+                                        <input matInput type="number" [(ngModel)]="_dias">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="fill" style="width: 100px;">
+                                        <mat-label>Horas:</mat-label>
+                                        <input matInput type="number" [(ngModel)]="_horas">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="fill" style="width: 100px;">
+                                        <mat-label>Minutos:</mat-label>
+                                        <input matInput type="number" [(ngModel)]="_minutos">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="fill" style="width: 100px;">
+                                        <mat-label>Costo:</mat-label>
+                                        <input matInput type="number" [(ngModel)]="_cos_serv">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="fill" style="width: 100px;">
+                                        <mat-label>I.V.A.:</mat-label>
+                                        <input matInput type="number" [(ngModel)]="_cost_add">
+                                    </mat-form-field>
+                                </div>
+                                <mat-form-field appearance="fill" class="w-100">
+                                    <mat-label>Descripción de servicio:</mat-label>
+                                    <textarea matInput [(ngModel)]="_desc_serv"></textarea>
+                                </mat-form-field>
+                                <mat-form-field appearance="fill" class="w-100">
+                                    <mat-label>Observaciones:</mat-label>
+                                    <textarea matInput [(ngModel)]="_observ"></textarea>
+                                </mat-form-field>
+                            </div>
+                            <div class="btnsets w-100">
+                                <button *ngIf="btnPost" class=" d-flex align-items-center justify-content-center" mat-raised-button color="warn" (click)="saveServs(_codec_us)">
+                                    <mat-icon>folder_special</mat-icon> Guardar {{_type_prov}}
+                                </button>
+                                <div class="btnsets d-flex" *ngIf="btnPut">
+                                    <button class=" d-flex align-items-center justify-content-center" mat-raised-button color="primary" (click)="putServices(_codec_us, _id_servs)">
+                                    <mat-icon>update</mat-icon> Actualizar {{_type_prov}} - Id. Serv.: ({{_id_servs}})
+                                </button>
+                                    <button class="w-25 d-flex align-items-center justify-content-center" mat-raised-button color="warn" (click)="cleanUp()">
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+                                </div>
+                            </div>
+                        </div>
                         <table class="table table-sm caption-top table-bordered border-primary align-middle w-100">
                             <caption>Servicios <strong>({{cantServs}})</strong>:</caption>
                             <thead class="table align-middle bg-warning table-bordered border-secondary">
@@ -129,9 +200,9 @@
                                 </td>
                                 <td>Nom. Servicio</td>
                                 <td>Descripción</td>
-                                <td>Fec. Inicio</td>
-                                <td>Fec. Final</td>
                                 <td>Días</td>
+                                <td>Minutos</td>
+                                <td>Horas</td>
                                 <td>Observ.</td>
                                 <td>VALOR</td>
                                 <td>IVA</td>
@@ -142,14 +213,14 @@
                                     <td (click)="dServices(servs.id, servs.cod_prov)">
                                         <mat-icon>delete</mat-icon>
                                     </td>
-                                    <td (click)="asignServices(servs.id, servs.nom_serv, servs.desc_serv, servs.cos_serv, servs.finit, servs.ffinal, servs.cost_add, servs.observ)">
+                                    <td (click)="asignServices(servs.id, servs.nom_serv, servs.desc_serv, servs.dias, servs.horas, servs.minutos, servs.cos_serv, servs.finit, servs.ffinal, servs.cost_add, servs.observ, servs.cod_serv)">
                                         <mat-icon>edit</mat-icon>
                                     </td>
                                     <td>{{servs.nom_serv}}</td>
                                     <td>{{servs.desc_serv}}</td>
-                                    <td>{{servs.finit | date: 'd/M/yyyy' }}</td>
-                                    <td>{{servs.ffinal | date: 'd/M/yyyy' }}</td>
-                                    <td>{{__days}}</td>
+                                    <td>{{servs.dias}}</td>
+                                    <td>{{servs.horas}}</td>
+                                    <td>{{servs.minutos}}</td>
                                     <td>{{servs.observ}}</td>
                                     <td>{{servs.cos_serv}}</td>
                                     <td>{{servs.cost_add}}</td>
@@ -159,64 +230,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="provsFicha">
-                    <div class="cabBtns d-flex">
-                        <div class="note d-flex align-items-center p-2"> Cod. Usuario: {{_codec_us}} </div>
-                        <button class=" d-flex align-items-center justify-content-center" mat-raised-button color="warn" (click)="cleanUp()">
-                      <mat-icon>assignment_ind</mat-icon> Añadir {{_type_prov}}
-                    </button>
-                    </div>
-                    <div class="work mt-2" [ngStyle]="{'background': _colorProv}">
-                        <div class="formsCab d-flex justify-content-between ">
-                            <mat-form-field appearance="fill" class="w-75">
-                                <mat-label>Nombre de servicio:</mat-label>
-                                <input matInput type="text" [(ngModel)]="_nameServ">
-                            </mat-form-field>
-                            <mat-form-field appearance="fill" style="width: 100px;">
-                                <mat-label>Costo:</mat-label>
-                                <input matInput type="number" [(ngModel)]="_cos_serv">
-                            </mat-form-field>
-                        </div>
-                        <mat-form-field appearance="fill" class="w-100">
-                            <mat-label>Descripción de servicio:</mat-label>
-                            <textarea matInput [(ngModel)]="_desc_serv"></textarea>
-                        </mat-form-field>
-                        <div class="d-flex justify-content-between">
-                            <mat-form-field appearance="fill">
-                                <mat-label>Fecha entrega {{_type_prov}}</mat-label>
-                                <mat-date-range-input [rangePicker]="picker">
-                                    <input matStartDate placeholder="Start date" [(ngModel)]="_finit">
-                                    <input matEndDate placeholder="End date" [(ngModel)]="_ffinal">
-                                </mat-date-range-input>
-                                <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-date-range-picker #picker></mat-date-range-picker>
-                            </mat-form-field>
-                            <mat-form-field appearance="fill" style="width: 100px;">
-                                <mat-label>I.V.A.:</mat-label>
-                                <input matInput type="number" [(ngModel)]="_cost_add">
-                            </mat-form-field>
-                        </div>
-                        <mat-form-field appearance="fill" class="w-100">
-                            <mat-label>Observaciones:</mat-label>
-                            <textarea matInput [(ngModel)]="_observ"></textarea>
-                        </mat-form-field>
-                    </div>
-                    <div class="btnsets w-100">
-                        <button *ngIf="btnPost" class=" d-flex align-items-center justify-content-center" mat-raised-button color="warn" (click)="saveServs(_codec_us)">
-                      <mat-icon>folder_special</mat-icon> Guardar {{_type_prov}}
-                    </button>
 
-                        <div class="btnsets d-flex" *ngIf="btnPut">
-                            <button class=" d-flex align-items-center justify-content-center" mat-raised-button color="primary" (click)="putServices(_codec_us, _id_servs)">
-                              <mat-icon>update</mat-icon> Actualizar {{_type_prov}} - Id. Serv.: ({{_id_servs}})
-                            </button>
-                            <button class="w-25 d-flex align-items-center justify-content-center" mat-raised-button color="warn" (click)="cleanUp()">
-                              <mat-icon>cancel</mat-icon>
-                            </button>
-                        </div>
-                    </div>
-                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" (click)="getProveedores(_type_prov, 'cod_prov', '_', 'asc', this.xx);" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

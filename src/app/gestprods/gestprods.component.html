@@ -1,4 +1,207 @@
 <!-- Modal -->
+<div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title d-flex align-items-center" id="exampleModalLabel">
+                    <mat-icon>account_tree</mat-icon> Asignación:</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body d-flex">
+                <div class="arm-container p-2 h-100">
+                    <div class="dis">
+                        Producto: <strong> {{_nom_prod}} </strong>
+                    </div>
+                    <hr>
+                    <div class="prod-body" style="height: 450px; overflow: auto;">
+                        Proveedores necesitados para generar este producto: <strong> ({{cantCProd}}) </strong>.
+                        <div *ngFor="let xx of arrProdC" class="xx">
+                            <div class="dd">
+                                <li>
+                                    <div class="btn btn-outline-dark w-100 d-flex align-items-center" (dblclick)="dCprod(xx.cod_prov, xx.cod_serv, xx.cod_prod, xx.id)">
+                                        <mat-icon>badge</mat-icon> {{xx.nom_prov | titlecase }}
+                                    </div>
+                                </li>
+                                <li class="d-flex justify-content-between">Subtotal: <strong> $ {{xx.cos_serv}} </strong></li>
+                                <li class="d-flex justify-content-between">IVA: ({{xx.iva}}): <strong> $ {{xx.total_IVA}} </strong></li>
+                                <li class="d-flex justify-content-between">Total: <strong> $ {{xx.costoTotal}} </strong> </li>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="xB w-100">
+                    <mat-tab-group class="w-100">
+                        <mat-tab label="Proveedor de servicios" (click)="_show_servs_provs = !_show_servs_provs">
+                            <div class="searck">
+                                <mat-form-field appearance="fill" class="w-100">
+                                    <mat-label>Buscador de proveedores de servicios por nombre (Presione la tecla ENTER):</mat-label>
+                                    <input matInput type="text" [(ngModel)]="_search" (keyup.enter)="this.getProveedores('servicios', 'nom_prov', _search, 'asc', this.xx);">
+                                </mat-form-field>
+                            </div>
+                            <div class="d-flex w-100">
+                                <div class="tableFixHead w-100 " id="tbFix">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th class="p-2"> Nom. Proveedor</th>
+                                                <!-- <th class="p-2"> Servicios</th> -->
+                                                <th class="p-2"> Teléfono </th>
+                                                <th class="p-2"> Dirección </th>
+                                                <th class="p-2"> Ciudad </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="trActive" *ngFor="let aa of proveeArrGet">
+                                                <td (click)="this.getServicios(aa.cod_prov, 'nom_serv', 'a', 'desc', aa.nom_prov); _show_servs_provs = !_show_servs_provs" class="d-flex align-items-center bg-primary text-light">
+                                                    <mat-icon>chevron_right</mat-icon> {{aa.nom_prov}}
+                                                </td>
+                                                <!-- <td>
+                                                <li>
+
+                                                </li>
+                                            </td> -->
+                                                <td> {{aa.telef}} </td>
+                                                <td> {{aa.direccion}} </td>
+                                                <td> {{aa.ciudad}} </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                                <div *ngIf="_show_servs_provs">
+                                    <div class="bg-warning text-dark rounded-3 w-100 p-2" style="z-index: 700; box-shadow: 0px 5px 10px rgba(0,0,0,0.5);">
+                                        <span class="fs-6"> <strong> {{nom_server_prov}} </strong></span>
+                                        <span style="font-size: 9pt;">| Cant. Servicios: ( <strong> {{cantServs}}</strong> )
+                                        </span>
+                                    </div>
+
+                                    <div class="d-flex flex-column h-100 animate__animated animate__fadeInUp" style="width: 300px; height: 350px !important; overflow-y: auto;">
+
+                                        <div *ngFor="let xserv of xArrServs" class="servsProv p-2 rounded-2 m-2 bg-primary text-light">
+
+                                            <li title="{{xserv.desc_serv}}">
+                                                <strong class="text-light"> Nombre: </strong> {{xserv.nom_serv}}
+                                            </li>
+                                            <!-- <li>
+                                                <strong class="text-light">Descripción:</strong> {{xserv.desc_serv}}
+                                            </li> -->
+                                            <li>
+                                                <table class="table table-sm rounded-2" style="box-shadow: 0px 0px 10px rgba(0,0,0,0.5);">
+                                                    <thead class="bg-warning text-dark table-sm">
+                                                        <th class="bg-warning" style="font-size: 8pt;">M</th>
+                                                        <th class="bg-warning" style="font-size: 8pt;">D</th>
+                                                        <th class="bg-warning" style="font-size: 8pt;">H</th>
+                                                        <th class="bg-warning" style="font-size: 8pt;">Costo</th>
+                                                        <th class="bg-warning" style="font-size: 8pt;">C. Add.</th>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="bg-warning text-dark" style="font-size: 9pt;"><strong>{{xserv.dias}}                        </strong></td>
+                                                            <td class="bg-warning text-dark" style="font-size: 9pt;"><strong>{{xserv.horas}}                       </strong></td>
+                                                            <td class="bg-warning text-dark" style="font-size: 9pt;"><strong>{{xserv.minutos}}                     </strong></td>
+                                                            <td class="bg-warning text-dark" style="font-size: 9pt;"><strong>$ {{xserv.cos_serv | number: '1.2-2'}}</strong></td>
+                                                            <td class="bg-warning text-dark" style="font-size: 9pt;"><strong>$ {{xserv.cost_add | number: '1.2-2'}}</strong></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div (click)="saveProdsCreate(xserv.cod_prov, xserv.cod_serv, _nom_prod)" class="btn btn-outline-light d-flex justify-content-end align-items-center">
+                                                    <mat-icon>task_alt</mat-icon> Aplicar Servicio
+                                                </div>
+                                            </li>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-tab>
+
+                        <mat-tab label="Proveedor de Bienes (Productos...)" (click)="_show_servs_provs = !_show_servs_provs">
+                            <mat-form-field appearance="fill" class="w-100">
+                                <mat-label>Buscador de proveedores de materiales por nombre (Presione la tecla ENTER):</mat-label>
+                                <input matInput type="text" [(ngModel)]="_search" (keyup.enter)="this.getProveedores('materiales', 'nom_prov', _search, 'asc', this.xx);">
+                            </mat-form-field>
+                            <div class="d-flex w-100">
+                                <div class="tableFixHead w-100 ">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th class="p-2"> Nom. Proveedor</th>
+                                                <th class="p-2"> Teléfono</th>
+                                                <th class="p-2"> Dirección</th>
+                                                <th class="p-2"> Ciudad</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="trActive" *ngFor="let ab of proveServArrGet">
+                                                <td (click)="this.getServicios(ab.cod_prov, 'nom_serv', 'a', 'desc', ab.nom_prov); _show_servs_provs = !_show_servs_provs" class="d-flex align-items-center bg-primary text-light">
+                                                    <mat-icon>chevron_right</mat-icon> {{ab.nom_prov}}
+                                                </td>
+                                                <td> {{ab.telef}} </td>
+                                                <td> {{ab.direccion}} </td>
+                                                <td> {{ab.ciudad}} </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div *ngIf="_show_servs_provs">
+                                    <div class="bg-warning text-dark rounded-3 w-100 p-2" style="z-index: 700; box-shadow: 0px 5px 10px rgba(0,0,0,0.5);">
+                                        <span class="fs-6"> <strong> {{nom_server_prov}} </strong></span>
+                                        <span style="font-size: 9pt;">| Cant. Servicios: ( <strong> {{cantServs}}</strong> )
+                                      </span>
+                                    </div>
+
+                                    <div class="d-flex flex-column h-100 animate__animated animate__fadeInUp" style="width: 300px; height: 350px !important; overflow-y: auto;">
+
+                                        <div *ngFor="let xserv of xArrServs" class="servsProv p-2 rounded-2 m-2 bg-primary text-light">
+
+                                            <li title="{{xserv.desc_serv}}">
+                                                <strong class="text-light"> Nombre: </strong> {{xserv.nom_serv}}
+                                            </li>
+                                            <!-- <li>
+                                              <strong class="text-light">Descripción:</strong> {{xserv.desc_serv}}
+                                          </li> -->
+                                            <li>
+                                                <table class="table table-sm rounded-2" style="box-shadow: 0px 0px 10px rgba(0,0,0,0.5);">
+                                                    <thead class="bg-warning text-dark table-sm">
+                                                        <th class="bg-warning" style="font-size: 8pt;">M</th>
+                                                        <th class="bg-warning" style="font-size: 8pt;">D</th>
+                                                        <th class="bg-warning" style="font-size: 8pt;">H</th>
+                                                        <th class="bg-warning" style="font-size: 8pt;">Costo</th>
+                                                        <th class="bg-warning" style="font-size: 8pt;">C. Add.</th>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="bg-warning text-dark" style="font-size: 9pt;"><strong>{{xserv.dias}}                        </strong></td>
+                                                            <td class="bg-warning text-dark" style="font-size: 9pt;"><strong>{{xserv.horas}}                       </strong></td>
+                                                            <td class="bg-warning text-dark" style="font-size: 9pt;"><strong>{{xserv.minutos}}                     </strong></td>
+                                                            <td class="bg-warning text-dark" style="font-size: 9pt;"><strong>$ {{xserv.cos_serv | number: '1.2-2'}}</strong></td>
+                                                            <td class="bg-warning text-dark" style="font-size: 9pt;"><strong>$ {{xserv.cost_add | number: '1.2-2'}}</strong></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </li>
+                                            <div (click)="saveProdsCreate(xserv.cod_prov, xserv.cod_serv, _nom_prod)" class="btn btn-outline-light d-flex justify-content-end align-items-center">
+                                                <mat-icon>task_alt</mat-icon> Aplicar Servicio
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </div>
+
+            </div>
+            <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div> -->
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
 <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -80,8 +283,8 @@
     </div>
     <div class="data">
         <mat-form-field appearance="fill" class="w-100">
-            <mat-label>Nombre del produucto:</mat-label>
-            <input matInput type="text" [(ngModel)]="_nom_prod" [disabled]="_lock">
+            <mat-label>Nombre del producto:</mat-label>
+            <input matInput type="text" [(ngModel)]="_nom_prod" (keyup)="persistNameProd(_nom_prod)" [disabled]="_lock">
         </mat-form-field>
         <mat-form-field appearance="fill" class="w-100">
             <mat-label>Descripción del producto:</mat-label>
@@ -100,25 +303,36 @@
             %.<input matInput type="number" [(ngModel)]="_descu" [disabled]="_lock">
         </mat-form-field>
     </div>
-
-    <mat-form-field appearance="fill" class="inputsResp p-1" style="width: 20%;">
-        <mat-label>Color:</mat-label>
-        <input matInput type="text" [(ngModel)]="_color" [disabled]="_lock">
-    </mat-form-field>
-    <mat-form-field appearance="fill" class="inputsResp w-50 p-1">
-        <mat-label>Uso:</mat-label>
-        <input matInput type="text" [(ngModel)]="_uso" [disabled]="_lock">
-    </mat-form-field>
-    <mat-form-field appearance="fill" class="inputsResp p-1" style="width: 28%;">
-        <mat-label>Grupo:</mat-label>
-        <input matInput type="text" [(ngModel)]="_grupo" [disabled]="_lock">
-    </mat-form-field>
-    <mat-form-field appearance="fill" class="inputsResp w-25">
-        <mat-label>Sub Grupo:</mat-label>
-        <input matInput type="text" [(ngModel)]="_sgrupo" [disabled]="_lock">
-    </mat-form-field>
-
-
+    <div class="d-flex justify-content-between flex-wrap">
+        <mat-form-field appearance="fill" class="inputsResp p-1" style="width: 20%;">
+            <mat-label>Color:</mat-label>
+            <input matInput type="text" [(ngModel)]="_color" [disabled]="_lock">
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="inputsResp w-50 p-1">
+            <mat-label>Uso:</mat-label>
+            <input matInput type="text" [(ngModel)]="_uso" [disabled]="_lock">
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="inputsResp p-1" style="width: 28%;">
+            <mat-label>Grupo:</mat-label>
+            <input matInput type="text" [(ngModel)]="_grupo" [disabled]="_lock">
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="inputsResp w-25">
+            <mat-label>Sub Grupo:</mat-label>
+            <input matInput type="text" [(ngModel)]="_sgrupo" [disabled]="_lock">
+        </mat-form-field>
+        <button style="height: 45px;" data-bs-toggle="modal" data-bs-target="#exampleModal3" mat-raised-button color="primary" class="d-flex w-50 align-items-center">
+          <mat-icon>search</mat-icon>Escojer proveedores
+        </button>
+        <div class="provchoice p-4 w-100 mb-2 d-flex justify-content-around align-items-center" style="background-color: #522963;">
+            <!--  -->
+            <div style="box-shadow: 0px 5px 10px rgba(0,0,0,0.5); border: solid 1px gray;" class="provSends d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#exampleModal3" *ngFor="let xx of arrProdC">
+                <span>{{xx.nom_prov | titlecase}}</span>
+                <div (click)="dCprod(xx.cod_prov, xx.cod_serv, xx.cod_prod, xx.id)" class="btdel d-flex align-items-center justify-content-center">
+                    <mat-icon>cancel</mat-icon>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="btnsets w-100">
     <button *ngIf="btnPost" (click)="saveProdDB()" [disabled]="_lock" class="w-100 d-flex align-items-center justify-content-center" mat-raised-button color="accent">

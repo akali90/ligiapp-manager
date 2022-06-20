@@ -15,6 +15,46 @@
     justify-content: space-between;
 }
 
+.btdel {
+    background-color: orangered;
+    border-radius: 10px;
+    color: white;
+    transition: ease all 0.5s;
+}
+
+.btdel:hover {
+    background-color: yellow;
+    color: #444444;
+    transition: ease all 0.5s;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.provSends {
+    width: 250px !important;
+    display: flex;
+    justify-content: space-between;
+}
+
+#tbFix {
+    height: 350px !important;
+}
+
+.provSends {
+    width: auto;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #444444;
+    color: wheat;
+}
+
+.xx {
+    border: solid 1px gray;
+    border-radius: 5px;
+    padding: 5px;
+    margin-top: 5px;
+}
+
 .mainMods {
     background-color: rgb(216, 216, 216);
     border-radius: 10px;

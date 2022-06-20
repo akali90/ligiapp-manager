@@ -6,6 +6,7 @@ import { MycompaniesService } from '../mycompanies.service';
 import { TokengenerateService } from '../tokengenerate.service';
 import { OrtoprovService } from '../ortoprov.service';
 import { OrtoservService } from '../ortoserv.service';
+import { CreateprodService } from '../module-inventary/services/createprod.service';
 
 const Toast = Swal.mixin({
   toast: true,
@@ -57,13 +58,16 @@ export class GestprodsComponent implements OnInit {
   public _ftitle: any = '';
   public _fparagraph: any = '';
   public xx: any = sessionStorage.getItem('Companies');
+
   constructor( private Prod: ProductServsService,
                private tk: TokengenerateService,
                private compan: MycompaniesService,
                public Oservices: OrtoprovService,
-               public OrtoservServices: OrtoservService ) { }
+               public OrtoservServices: OrtoservService,
+               public cprodService: CreateprodService ) { }
 
   public x: any = sessionStorage.getItem('Companies');
+
   ngOnInit(): void {
 
     this._ftitle = Number(sessionStorage.getItem('font-size-title'));
@@ -88,8 +92,26 @@ export class GestprodsComponent implements OnInit {
       this.labelMessage = '- NO HAY SELECCIÓN -';
     }
 
+    let xnomProv: any = localStorage.getItem('name_proveedor')
+    this.nom_server_prov = xnomProv;
+
+    let xnomProd: any = localStorage.getItem('_nom_prod');
+    this._nom_prod = xnomProd;
+
+    let xcia: any = sessionStorage.getItem('Companies')
+    this.getCProds(xcia, xnomProd);
+
   }
 
+  public arrProdCreate: any = [];
+  createProd(servicio:string, costo: number) {
+    this.arrProdCreate.push([{servicio: servicio, costo: costo}]);
+    console.log(this.arrProdCreate);
+  }
+
+  persistNameProd(_nom_prod: string) {
+    localStorage.setItem('_nom_prod', _nom_prod);
+  }
 
     //#region INTERFAZ GENERA FUNCIONAMIENTO INICIO
     changeModsView(obA:boolean, obB:boolean, cola: string, colb: string, bordA: string, bordB: string, btnPost: boolean) {
@@ -137,7 +159,114 @@ export class GestprodsComponent implements OnInit {
     })
   }
 
+  public arrCProds: any = [];
+  saveProdsCreate(cod_prov: string, cod_serv: string, cod_prod: string) {
 
+    this._show_spinner = true;
+    let xCcia: any = sessionStorage.getItem('Companies');
+    let npord: any = localStorage.getItem('_nom_prod');
+    let cprod = cod_prod.slice(0,3) + '-' + cod_prov + '-' + new Date().getFullYear();
+    // let cserv = cod_prov.slice(0,5) + '-' + new Date().getFullYear() + '-' + 'SERV' + '-' + cod_serv.slice(0,30).replace(/\s+/g, '_');
+
+    console.log(cprod.length)
+    console.log(cod_serv)
+
+    this.arrCProds = {
+      cod_prov: cod_prov,
+      cod_serv: cod_serv,
+      cod_prod: cprod,
+      cod_cia:  xCcia,
+      date_match_serv: new Date(),
+      name_prod: cod_prod
+    }
+
+    console.log(this.arrCProds);
+
+    this.cprodService.saveCreateProds(this.arrCProds).subscribe({
+      next: (cprod) => {
+        this._show_spinner = false;
+        console.log('cprod');
+      },
+      error: () => {
+        this._show_spinner = false;
+      },
+      complete: () => {
+        this._show_spinner = false;
+        let xnomProd: any = localStorage.getItem('_nom_prod');
+        this.getCProds(xCcia, xnomProd);
+      }
+    })
+
+  }
+
+  dCprod(cprov: string, codserv: string, codprod: string, id: number) {
+
+    let xcia: any = sessionStorage.getItem('Companies');
+    this._show_spinner = true;
+
+    this.cprodService.delCreateProds(cprov, codserv, codprod, id).subscribe( {
+        next: () => {
+          this._show_spinner = false;
+        },
+        error: () => {
+          this._show_spinner = false;
+        },
+        complete: () => {
+          this._show_spinner = false;
+          console.log('xxxsxsxsxxxxs')
+          let xnomProd: any = localStorage.getItem('_nom_prod');
+          this.getCProds(xcia, xnomProd);
+        }
+      }
+    )
+  }
+
+  public arrProdC: any = [];
+  public cantCProd: number = 0;
+  getCProds(ccia: string, nprods: string) {
+    this._show_spinner = true;
+    this.cprodService.getCreateProds( ccia, nprods ).subscribe({
+      next: (prod) => {
+        this.arrProdC = prod;
+        console.log(this.arrProdC.length);
+        this.cantCProd = this.arrProdC.length;
+      },
+      error: () => {
+        this._show_spinner = false;
+      },
+      complete: () => {
+        this._show_spinner = false;
+        // console.log('Obteniendo la data');
+        // console.log(this.arrProdC);
+        // this.cantCProd = this.arrCProds.length;
+        // console.log(this.cantCProd);
+      }
+    })
+  }
+
+  public xArrServs: any = [];
+  public cantServs: number = 0.00;
+  public _show_servs_provs: boolean = false;
+  public nom_server_prov: string = '';
+  getServicios(cprov: string, properties:string, data:string, order:string, name_prov: string) {
+    localStorage.setItem('name_proveedor', name_prov);
+    this.nom_server_prov = name_prov;
+    this._show_spinner = true;
+    this.OrtoservServices.getServs(cprov, properties, data, order).subscribe({
+      next:(servs)=>{
+        this.xArrServs = servs;
+      }, error: () => {
+        this._show_spinner = false;
+      }, complete: () => {
+        this.cantServs = this.xArrServs.length;
+        this._show_spinner = false;
+        console.log(this.xArrServs);
+      }
+    })
+  }
+
+  //spinner
+  public _show_spinner: boolean = false;
   public cantProducts: number = 0;
   public arrProducts: any = [];
   getProducts(top:number, properties:string, data:string, order:string, ccia:string) {

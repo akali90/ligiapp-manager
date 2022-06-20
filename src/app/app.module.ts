@@ -60,8 +60,8 @@ import { MycompaniesComponent } from './mycompanies/mycompanies.component';
 import { GestprodsComponent } from './gestprods/gestprods.component';
 import { ConfiguracionesComponent } from './configuraciones/configuraciones.component';
 import { VersionamientoComponent } from './versionamiento/versionamiento.component';
-// import { FilterPipe } from './pipes/filter.pipe';
-
+import { ModInvComponent } from './module-inventary/components/mod-inv/mod-inv.component';
+import { SpinnerComponent } from './spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -72,8 +72,11 @@ import { VersionamientoComponent } from './versionamiento/versionamiento.compone
     MycompaniesComponent,
     GestprodsComponent,
     ConfiguracionesComponent,
-    VersionamientoComponent
+    VersionamientoComponent,
+    ModInvComponent,
+    SpinnerComponent
   ],
+
   imports: [
     //#region Angular MAterial
     A11yModule,
@@ -129,6 +132,7 @@ import { VersionamientoComponent } from './versionamiento/versionamiento.compone
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot([
+      { path: 'company',  component: MycompaniesComponent },
       { path: 'Dash',  component: DashComponent },
       { path: 'Login', component: LoginComponent, pathMatch: 'full' },
       { path: '**', pathMatch: 'full', redirectTo: 'Login'  }

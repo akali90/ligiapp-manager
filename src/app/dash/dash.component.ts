@@ -39,6 +39,8 @@ export class DashComponent implements OnInit {
   public fontsizetitle: any ='';
   public fontsizeparagraph: any ='';
 
+  public _modInv: boolean = false;
+
   constructor( private Mods:ModulesService, public router: Router ) {
     this.datos = ['Servicios', 'Materiales'];
   }
@@ -122,7 +124,8 @@ export class DashComponent implements OnInit {
         this._compan = false;
         this._citiz = false
         this._gest_prod = false
-        this._config = false
+        this._config = false;
+        this._modInv = false;
         break;
 
       case 'Cotizaciones':
@@ -131,7 +134,8 @@ export class DashComponent implements OnInit {
         this._compan = false;
         this._citiz = true;
         this._gest_prod = false;
-        this._config = false
+        this._config = false;
+        this._modInv = false;
         break;
 
       case 'Mi compañía':
@@ -140,55 +144,70 @@ export class DashComponent implements OnInit {
         this._compan = true;
         this._citiz = false
         this._gest_prod = false;
-        this._config = false
+        this._config = false;
+        this._modInv = false;
         break;
 
       case 'Gestor de productos':
         console.log(x);
         this._prov = false;
         this._compan = false;
-        this._citiz = false
-        this._gest_prod = true
-        this._config = false
+        this._citiz = false;
+        this._gest_prod = true;
+        this._config = false;
+        this._modInv = false;
         break;
 
       case 'Configuración':
         console.log(x);
         this._prov = false;
         this._compan = false;
-        this._citiz = false
-        this._gest_prod = false
-        this._config = true
+        this._citiz = false;
+        this._gest_prod = false;
+        this._config = true;
+        this._modInv = false;
         break;
 
       default:
         if(x == 'Mi compañía') {
           this._prov = false;
           this._compan = true;
-          this._citiz = false
-          this._gest_prod = false
-          this._config = false
+          this._citiz = false;
+          this._gest_prod = false;
+          this._config = false;
+          this._modInv = false;
         }
         else if( x == 'Cotizaciones' ) {
           this._prov = false;
           this._compan = false;
           this._citiz = true;
           this._gest_prod = false;
-          this._config = false
+          this._config = false;
+          this._modInv = false;
         }
         else if( x == 'Proveedores' ) {
           this._prov = true;
           this._compan = false;
           this._citiz = false;
           this._gest_prod = false;
-          this._config = false
+          this._config = false;
+          this._modInv = false;
         }
         else if( x == 'Gestor de productos' ) {
           this._prov = false;
           this._compan = false;
           this._citiz = false;
           this._gest_prod = true;
-          this._config = false
+          this._config = false;
+          this._modInv = false;
+        }
+        else if( x == 'Inventario' ) {
+          this._prov = false;
+          this._compan = false;
+          this._citiz = false;
+          this._gest_prod = false;
+          this._config = false;
+          this._modInv = true;
         }
 
     }
@@ -262,8 +281,10 @@ export class DashComponent implements OnInit {
   }
 
   closeSession() {
-    sessionStorage.removeItem('User')
-    sessionStorage.removeItem('Token')
+    sessionStorage.removeItem('User');
+    sessionStorage.removeItem('Token');
+    sessionStorage.removeItem('Companies');
+    sessionStorage.removeItem('Name-Companies');
     this.verification();
   }
 

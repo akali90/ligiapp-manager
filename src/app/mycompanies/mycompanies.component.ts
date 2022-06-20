@@ -26,6 +26,9 @@ const Toast = Swal.mixin({
 })
 export class MycompaniesComponent implements OnInit {
 
+  //spinner
+  public _show_spinner: boolean = false;
+
   public _search: string = '';
   public name_companies: string = 'Mi compañía';
   public _ncompany: string = '';
@@ -69,12 +72,25 @@ export class MycompaniesComponent implements OnInit {
   public _name_countrie: string = '';
   public cant_paises: number = 0;
   getCountries() {
+
+    this._show_spinner = true;
+
     console.log('paises')
-    this.countries.getApiRestCountries().subscribe( countries => {
+    this.countries.getApiRestCountries().subscribe( { next: (countries) => {
       this.countriesArr = countries;
       this.cant_paises = this.countriesArr.length;
       // console.log(this.countriesArr);
-    })
+    }, error: () => {
+      this._show_spinner = false;
+      Swal.fire(
+        'Tenemos pequeños problemas al cargar los países',
+        'Puedes digitarlo manualmente, muchas gracias, esperemos podamos retomar la conexión hacia este servicio web externo',
+        'question'
+      )
+    }, complete: () => {
+      this._show_spinner = false;
+    }
+  })
   }
 
   asignCountries(countrie: string) {
@@ -130,6 +146,8 @@ export class MycompaniesComponent implements OnInit {
     localStorage.setItem('ID-CIA', (id).toString());
     localStorage.setItem('Codec_edit_cia', codec_edit);
 
+
+
     this._ncompany      = _ncompany;
     this._descomp       = _descomp;
     this.picc_servicio  = _piccserv;
@@ -160,6 +178,7 @@ export class MycompaniesComponent implements OnInit {
   saveComp() {
 
     let xuser: any = sessionStorage.getItem('Token');
+    this._show_spinner = true;
 
     this.modComp = {
       name_cia   : this._ncompany,
@@ -192,6 +211,7 @@ export class MycompaniesComponent implements OnInit {
           icon:  'error',
           title: 'Compañía no se ha guardado correctamente'
         });
+        this._show_spinner = false;
       }, complete: () => {
         Toast.fire({
           icon:  'success',
@@ -202,13 +222,14 @@ export class MycompaniesComponent implements OnInit {
         this.getComp();
         this.cleanUp();
 
+        this._show_spinner = false;
       }
     })
 
   }
 
   updateComp() {
-
+    this._show_spinner = true;
     let xj: any = localStorage.getItem('ID-CIA');
     let codec_cia: any =localStorage.getItem('Codec_edit_cia');
     let xuser: any = sessionStorage.getItem('Token');
@@ -244,6 +265,7 @@ export class MycompaniesComponent implements OnInit {
           icon:  'error',
           title: 'Compañía no se ha actualizado correctamente'
         });
+        this._show_spinner = false;
       }, complete: () => {
         Toast.fire({
           icon:  'success',
@@ -253,14 +275,14 @@ export class MycompaniesComponent implements OnInit {
         let xusertoken: any = sessionStorage.getItem('Token');
         this.getComp();
         this.cleanUp();
-
+        this._show_spinner = false;
       }
     })
 
   }
 
   delComp(id: number) {
-
+    this._show_spinner = true;
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -279,6 +301,7 @@ export class MycompaniesComponent implements OnInit {
               icon:  'error',
               title: 'Compañía no se ha eliminado correctamente'
             });
+            this._show_spinner = false;
           }, complete: () => {
             Toast.fire({
               icon:  'success',
@@ -286,6 +309,7 @@ export class MycompaniesComponent implements OnInit {
             });
             let xusertoken: any = sessionStorage.getItem('Token')
             this.getComp();
+            this._show_spinner = false;
           }
         })
       }
@@ -320,17 +344,21 @@ export class MycompaniesComponent implements OnInit {
 
   public arrComp: any = [];
   getComp() {
+    this._show_spinner = true;
     let xusertoken:any = sessionStorage.getItem('Token')
     this.compan.getCompanies(xusertoken).subscribe({
       next: (x) => {
         this.arrComp = x;
         console.log(this.arrComp);
+        this._show_spinner = false;
+      }, error: () => {
+        this._show_spinner = false;
       }
     })
   }
 
   encodeImageFileAsURLA(idA: string, idB: string) {
-
+    this._show_spinner = true;
     const filesSelected: any = document.getElementById(idA) as HTMLInputElement;
     const fileId: any = filesSelected.files;
     let base: any;
@@ -349,6 +377,7 @@ export class MycompaniesComponent implements OnInit {
 
       fileReader.onloadend = () => {
         this.picc_servicio = fileReader.result;
+        this._show_spinner = false;
       };
 
       const a = fileReader.readAsDataURL(fileId[0]);

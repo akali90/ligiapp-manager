@@ -1,0 +1,101 @@
+<!-- Ingreso, movimiento y salida de productos, creación de bodegas -->
+<div class="title d-flex justify-content-between w-100">
+    <div class="xxx">
+        <h2 class="tih">Módulo de Inventario:</h2>
+    </div>
+    <div class="btns d-flex flex-wrap justify-content-end">
+        <!-- <button class="btnsdiv d-flex align-items-center" [ngStyle]="{'background-color': _color_btnA, 'border-bottom':'solid 5px ' + _color_bord_A }" (click)="changeModsView(true, false, '#5C277B', '#361E45', '#0EC9BB', 'whitesmoke', true)">
+      <mat-icon [ngStyle]="{'color': _color_bord_A }">add</mat-icon>Registrar
+    </button>
+      <button class="btnsdiv d-flex align-items-center" [ngStyle]="{'background-color': _color_btnB, 'border-bottom':'solid 5px ' + _color_bord_B }" (click)="changeModsView(false, true, '#361E45', '#5C277B', 'whitesmoke', '#0EC9BB', false)">
+      <mat-icon [ngStyle]="{'color': _color_bord_B }" >app_registration</mat-icon>Ingresados
+    </button> -->
+    </div>
+</div>
+
+
+<div class="sub-modules d-flex flex-wrap justify-content-around align-items-center h-100">
+
+    <div class="smod p-2" *ngFor="let xsm of subArrMod">
+        <div>
+            <mat-icon class="fs-1">{{xsm.icon}}</mat-icon>
+        </div>
+        <div>
+            {{xsm.name}}
+        </div>
+        <div class="note p-2 mt-1 rounded-1" style="text-align: left;">
+            {{xsm.description}}
+        </div>
+        <div class="w-100 mt-2">
+            <button mat-raised-button color="primary" class="w-100">Realizar esta acción</button>
+        </div>
+    </div>
+</div>
+
+<!--  -->
+<!-- <div *ngIf=" true " class="wind-float"></div>
+<div *ngIf=" _mov_prod " class="wind-float"></div>
+<div *ngIf=" _crea_bod " class="wind-float"></div>
+<div *ngIf=" _bool_inv " class="wind-float"></div> -->
+
+<div class="example-box d-flex flex-column" cdkDrag>
+
+    <div class="title bg-warning d-flex justify-content-between w-100">
+        <div class="xxx d-flex justify-content-center align-items-center">
+            <mat-icon>add_circle</mat-icon>
+            <h2 class="tih">Registrar este Producto:</h2>
+        </div>
+    </div>
+    <div class="d-flex justify-content-between mt-1 w-100">
+        <label for="nomProd">Producto:</label>
+        <div (click)="this.getProducts(75, 'cod_prod', '_', 'asc')" class="xdis_d btn btn-secondary p-1 rounded-circle d-flex justify-content-center align-content-center">
+            <mat-icon class="fs-6">search</mat-icon>
+        </div>
+        <input type="text" id="nomProd" class="input-dis" dissabled>
+    </div>
+    <!-- <div class="d-flex justify-content-between mt-1 w-100">
+        <label for="nomProv">Proveedor:</label>
+        <div class="xdis_d btn btn-secondary p-1 rounded-circle d-flex justify-content-center align-content-center">
+            <mat-icon class="fs-6">search</mat-icon>
+        </div>
+        <input type="text" id="nomProv" class="input-dis" dissabled>
+    </div> -->
+    <div class="d-flex align-items-center justify-content-between mt-1 w-100">
+        <label for="PreComp">P. Compra:</label>
+        <span>$</span><input type="number" id="PreComp" class="input-num">
+    </div>
+    <div class="d-flex align-items-center justify-content-between mt-1 w-100">
+        <label for="PreVen">P. Venta:</label>
+        <span>$</span><input type="number" id="PreVen" class="input-num">
+    </div>
+    <div class="d-flex align-items-center justify-content-between mt-1 w-100">
+        <label for="Stock">Stock:</label>
+        <input type="number" id="Stock" class="input-num">
+    </div>
+    <div class="d-flex align-items-center justify-content-between mt-1 w-100">
+        <label for="unitmd">Unidad de medida:</label>
+        <select class="p-1 ">
+          <option>Kg. (Kilogramos)</option>
+          <option>Gr. (Gramos)</option>
+          <option>m. (Metros)</option>
+          <option>cm. (Centímetros)</option>
+          <option>L. (Litros)</option>
+          <option>ml. (Mililitros)</option>
+        </select>
+    </div>
+    <div class="btnsetts mt-2 w-100 d-flex">
+        <button mat-raised-button class="w-25" color="primary">
+          <mat-icon>cancel</mat-icon>
+        </button>
+        <button mat-raised-button class="w-75 d-flex align-items-center" color="accent">
+          <mat-icon>done</mat-icon>Agregar a Inventario
+        </button>
+    </div>
+
+    <div class="example-handle" cdkDragHandle>
+        <svg width="15px" style="color: black;" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
+      <path d="M0 0h24v24H0z" fill="none"></path>
+    </svg>
+    </div>
+</div>

@@ -27,6 +27,9 @@ const Toast = Swal.mixin({
 export class MasterProvComponent implements OnInit {
   panelOpenState = false;
 
+  //spinner
+  public _show_spinner: boolean = false;
+
   public datos: any = [];
   public mods: any = [];
   public x: any;
@@ -102,12 +105,20 @@ export class MasterProvComponent implements OnInit {
 
   public arrComp: any = [];
   getComp(properties: string, data: string, order: string) {
-    let xusertoken:any = sessionStorage.getItem('Token')
+    let xusertoken:any = sessionStorage.getItem('Token');
+    this._show_spinner = true;
     this.compan.getCompanies(xusertoken).subscribe({
       next: (x) => {
         this.arrComp = x;
         console.log(this.arrComp);
+        this._show_spinner = false;
+      }, error: () => {
+        this._show_spinner = false;
+      },
+      complete: () => {
+        this._show_spinner = false;
       }
+
     })
   }
 
@@ -138,7 +149,7 @@ export class MasterProvComponent implements OnInit {
 
   public proveeArr: any = [];
   saveProveedor() {
-
+    this._show_spinner = true;
     let xcod = this.tgen.generateRandomString(25)
 
     this.proveeArr = {
@@ -168,6 +179,7 @@ export class MasterProvComponent implements OnInit {
           icon: 'error',
           title: 'No hemos podido guardarlo, revise su conexión a internet'
         });
+        this._show_spinner = false;
       },
       complete: () => {
         this.getProveedores('servicios', 'cod_prov', '_', 'asc', this.xx);
@@ -177,6 +189,7 @@ export class MasterProvComponent implements OnInit {
           title: 'Proveedor guardado con éxito'
         });
         this.cclean();
+        this._show_spinner = false;
       }
     })
 
@@ -186,6 +199,7 @@ export class MasterProvComponent implements OnInit {
   public proveServArrGet: any = [];
   getProveedores(tipo: string, properties: string, data: string, order: string, ccia:string) {
 
+    this._show_spinner = true;
     if( properties == 'nom_prov' && data == '' ) {
       properties = 'cod_prov';
       data = '_';
@@ -208,9 +222,10 @@ export class MasterProvComponent implements OnInit {
         }
 
       }, error: () => {
-
+        this._show_spinner = false;
       }, complete: () => {
         // console.log('Extraido completamente')
+        this._show_spinner = false;
       }
     })
   }
@@ -254,6 +269,7 @@ export class MasterProvComponent implements OnInit {
   }
 
   upProv() {
+    this._show_spinner = true;
     let xcod: any = localStorage.getItem('Codec_edit')?.trim()
     let xid: any = localStorage.getItem('ID');
     this.proveeArr = {
@@ -280,6 +296,7 @@ export class MasterProvComponent implements OnInit {
       }
       ,error: () => {
         console.warn('No se ha podido actualizar')
+        this._show_spinner = false;
       }, complete: () => {
         this.getProveedores('servicios', 'cod_prov', '_', 'asc', this.xx);
         this.getProveedores('bienes', 'cod_prov', '_', 'asc', this.xx);
@@ -291,13 +308,14 @@ export class MasterProvComponent implements OnInit {
         this.btnPost    = true;
         this.btnPut     = false;
         this._colorProv = '#EFEFEF';
+        this._show_spinner = false;
       }
     })
 
   }
 
   deleteProv(codec: string) {
-
+    this._show_spinner = true;
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -320,9 +338,11 @@ export class MasterProvComponent implements OnInit {
               icon: 'error',
               title: 'No se pudo eliminar'
             });
+            this._show_spinner = false;
           }, complete: () =>{
             this.getProveedores('servicios', 'cod_prov', '_', 'asc', this.xx);
             this.getProveedores('bienes', 'cod_prov', '_', 'asc', this.xx);
+            this._show_spinner = false;
           }
 
         })
@@ -334,18 +354,27 @@ export class MasterProvComponent implements OnInit {
   }
 
   public servOrt: any = [];
+  public _dias:    number = 0;
+  public _horas:   number = 0;
+  public _minutos: number = 0;
   saveServs(cod_prov: string) {
+
+
 
       this.servOrt = {
         nom_serv  : this._nameServ,
         desc_serv : this._desc_serv,
         cos_serv  : this._cos_serv,
-        finit     : this._finit,
-        ffinal    : this._ffinal,
         cost_add  : this._cost_add,
         cod_prov  : cod_prov,
-        observ    : this._observ
+        observ    : this._observ,
+        dias      : this._dias,
+        horas     : this._horas,
+        minutos   : this._minutos,
+        cod_serv  : 'SERV-'+this.tgen.generateRandomString(20)+'-'+cod_prov
       }
+
+
 
       console.log(this.servOrt);
 
@@ -384,7 +413,9 @@ export class MasterProvComponent implements OnInit {
   }
 
   public _id_servs: number = 0;
-  asignServices(ids: number, _nameServ: string, _desc_serv: string, cos_serv: number, _finit: any, _ffinal: any, _cost_add: number, _observ: string) {
+  public _bool_des_server: boolean = false;
+  public codServices: string = '';
+  asignServices(ids: number, _nameServ: string, _desc_serv: string, dias: number, horas: number, minutos: number, cos_serv: number, _finit: any, _ffinal: any, _cost_add: number, _observ: string, codServs: string) {
     this._nameServ = _nameServ
     this._desc_serv = _desc_serv
     this._cos_serv = cos_serv
@@ -397,6 +428,10 @@ export class MasterProvComponent implements OnInit {
     this._colorProv = '#B2E1DF';
     this.btnPost    = false;
     this.btnPut     = true;
+    this._dias      = dias;
+    this._horas     = horas;
+    this._minutos   = minutos;
+    this.codServices = codServs;
   }
 
   putServices(cod_prov: string, id: number) {
@@ -406,12 +441,14 @@ export class MasterProvComponent implements OnInit {
       nom_serv  : this._nameServ,
       desc_serv : this._desc_serv,
       cos_serv  : this._cos_serv,
-      finit     : this._finit,
-      ffinal    : this._ffinal,
       cost_add  : this._cost_add,
       cod_prov  : cod_prov,
       observ    : this._observ,
-      id: id
+      id        : id,
+      dias      : this._dias,
+      horas     : this._horas,
+      minutos   : this._minutos,
+      cod_serv  : this.codServices
 
     }
 
@@ -467,6 +504,9 @@ export class MasterProvComponent implements OnInit {
     this._pais = '';
     this._ciudad = '';
     this._web = '';
+    this._dias = 0;
+    this._horas = 0;
+    this._minutos = 0;
     this.btnPost = true;
     this.btnPut = false;
     this._colorProv = '#EFEFEF';

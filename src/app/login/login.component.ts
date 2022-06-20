@@ -29,6 +29,8 @@ const Toast = Swal.mixin({
 
 export class LoginComponent implements OnInit {
 
+  public _show_spinner: boolean = false;
+
   public nameUs: string  = '';
   public passUs: string  = '';
   public rpassUs: string  = '';
@@ -59,6 +61,10 @@ export class LoginComponent implements OnInit {
 
       this.passUs = '';
       this.rpassUs = '';
+      this._show_spinner = true;
+      setTimeout(() => {
+        this._show_spinner = false;
+      }, 1500);
 
    }
 
@@ -101,6 +107,7 @@ export class LoginComponent implements OnInit {
 
    public arrEmail: any = [];
    sendMail(emailDestiny: string, asunto: string, contentBody: string) {
+    this._show_spinner = true;
     this.arrEmail = {
       emailDestinity: emailDestiny,
       asunto: asunto,
@@ -109,8 +116,10 @@ export class LoginComponent implements OnInit {
 
       this.sendmail.sendEmail(this.arrEmail).subscribe( x => {
         console.log('Email enviado');
+        this._show_spinner = false;
       }, () => {
         console.warn('Error al enviar el email');
+        this._show_spinner = false;
       })
 
    }
@@ -136,13 +145,14 @@ export class LoginComponent implements OnInit {
           tipo: 'S',
           license: 'prueba'
     }
-
+    this._show_spinner = true;
     this.Log.saveUser(this.arrUserSave).subscribe({
       next: (x) => {
         console.log(x);
       },
       error: () => {
         console.warn('Algo ha sucedido error S-504');
+        this._show_spinner = false;
       },
       complete: () => {
 
@@ -164,7 +174,7 @@ export class LoginComponent implements OnInit {
           icon: 'success',
           title: '¡Tu cuenta ha sido creada con éxito!'
         });
-
+        this._show_spinner = false;
       }
     }
     )
@@ -214,7 +224,7 @@ export class LoginComponent implements OnInit {
       }
       break;
     case 1:
-      if( this.rpassUs == this.passUs ) {
+      if( this.rpassUs == this.passUs && this.rpassUs.length >= 4 ) {
         this.dis_user_save = false;
         this.icon_re = 'done';
         this.color_icon = 'yellowgreen';
@@ -238,10 +248,12 @@ export class LoginComponent implements OnInit {
   public us: any = [];
 
    verification() {
+      this._show_spinner = true;
      if( (this.x == '' && this.y == '') || (this.x == undefined && this.y == undefined) ) {
        console.log('No hay usuarios')
        this.router.navigate(['/Login']);
      } else {
+      this._show_spinner = false;
       this.router.navigate(['/Dash']);
      }
    }
@@ -252,7 +264,7 @@ export class LoginComponent implements OnInit {
       nombre:   this.nameUs,
       password: this.passUs
     }
-
+    this._show_spinner = true;
     // console.log(this.kus)
     this.Log.Login(this.kus).subscribe({
       next: (x) => {
@@ -262,6 +274,7 @@ export class LoginComponent implements OnInit {
           icon: 'error',
           title: '¡Algo ha pasado!'
         })
+        this._show_spinner = false;
       },
 
       complete: () => {
@@ -274,7 +287,7 @@ export class LoginComponent implements OnInit {
           icon: 'success',
           title: '¡Haz accedido con éxito!'
         });
-
+        this._show_spinner = false;
       }
     })
   }

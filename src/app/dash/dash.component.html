@@ -39,7 +39,7 @@
             </div>
 
             <div *ngIf="_cont_accion_bool" class="animate__animated animate__fadeInDown p-2">
-                <div class="cont_mods d-flex justify-content-between align-items-center p-1" *ngFor="let ct of contacciones">
+                <div (click)="modord(ct.name_module)" class="cont_mods d-flex justify-content-between align-items-center p-1" *ngFor="let ct of contacciones">
                     <mat-icon style="font-size: 15pt;"> {{ct.icon_module}} </mat-icon>
                     <div [ngStyle]="{'font-size': fontsizeparagraph + 'pt'}" *ngIf="_name_mod_title">
                         <span class="mods animate__animated animate__fadeInRight">{{ct.name_module}}</span>
@@ -52,11 +52,12 @@
         </div>
     </div>
 
-    <div class="a" id="b" [ngStyle]="{'width': _width_b, 'transition': 'ease all 0.5s'}">
+    <div class="a" id="b" [ngStyle]="{'transition': 'ease all 0.5s'}">
         <app-mycompanies *ngIf="_compan"></app-mycompanies>
         <app-master-prov *ngIf="_prov"></app-master-prov>
         <app-gestprods *ngIf="_gest_prod"></app-gestprods>
         <app-configuraciones *ngIf="_config"></app-configuraciones>
+        <app-mod-inv *ngIf="_modInv"></app-mod-inv>
     </div>
 
 </div>
