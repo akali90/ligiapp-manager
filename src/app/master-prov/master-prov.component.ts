@@ -7,6 +7,7 @@ import { TokengenerateService } from '../tokengenerate.service';
 import Swal from 'sweetalert2'
 import { OrtoservService } from '../ortoserv.service';
 import { MycompaniesService } from '../mycompanies.service';
+import { CountriesrestapiService } from '../countriesrestapi.service';
 
 const Toast = Swal.mixin({
   toast: true,
@@ -71,14 +72,14 @@ export class MasterProvComponent implements OnInit {
   public _color_btnA: string = '#5C277B';
   public _color_btnB: string = '#422A4F';
   public _color_bord_A: string = '#0EC9BB';
-  public _color_bord_B: string = 'transparent';
+  public _color_bord_B: string = 'white';
 
   foods: any = [
     {value: 'servicios', viewValue: 'Servicios'},
     {value: 'bienes', viewValue: 'Bienes (Productos)'}
   ];
 
-  constructor( private Mods:ModulesService, private compan: MycompaniesService, public Oservices: OrtoprovService, public OrtoservServices: OrtoservService,  public router: Router, public tgen: TokengenerateService ) {
+  constructor( public countries: CountriesrestapiService, private Mods:ModulesService, private compan: MycompaniesService, public Oservices: OrtoprovService, public OrtoservServices: OrtoservService,  public router: Router, public tgen: TokengenerateService ) {
     this.datos = ['Servicios', 'Bienes'];
   }
 
@@ -102,6 +103,43 @@ export class MasterProvComponent implements OnInit {
   }
 
 
+// API PARA RELLENO DE PAISES
+  //------------------------------------------------------------------
+  public countriesArr: any = [];
+  public _name_countrie: string = '';
+  public cant_paises: number = 0;
+  getCountries() {
+
+    this._show_spinner = true;
+
+    console.log('paises')
+    this.countries.getApiRestCountries().subscribe( { next: (countries) => {
+      this.countriesArr = countries;
+      this.cant_paises = this.countriesArr.length;
+      // console.log(this.countriesArr);
+    }, error: () => {
+      this._show_spinner = false;
+      Swal.fire(
+        'Tenemos pequeños problemas al cargar los países',
+        'Puedes digitarlo manualmente, muchas gracias, esperemos podamos retomar la conexión hacia este servicio web externo',
+        'question'
+      )
+    }, complete: () => {
+      this._show_spinner = false;
+    }
+  })
+  }
+
+  asignCountries(countrie: string) {
+    this._pais = countrie;
+  }
+
+  getNameCountries(name: string) {
+    this.countries.getApiRestCountriesByName(name).subscribe( countriesn => {
+      this.countriesArr = countriesn;
+      console.log(this.countriesArr);
+    })
+  }
 
   public arrComp: any = [];
   getComp(properties: string, data: string, order: string) {
@@ -138,7 +176,7 @@ export class MasterProvComponent implements OnInit {
     this._codec_us = b;
     this._us_ficha = c;
     this.getProveedores(a, 'cod_prov', b, 'asc', this.xx);
-    this.getServicios(b, 'nom_serv', 'a', 'desc');
+    this.getServicios(b, 'cod_prov', '_', 'desc');
   }
 
   capturar(value:string) {
@@ -151,7 +189,7 @@ export class MasterProvComponent implements OnInit {
   saveProveedor() {
     this._show_spinner = true;
     let xcod = this.tgen.generateRandomString(25)
-
+    let xCiaCod: any = sessionStorage.getItem('Companies');
     this.proveeArr = {
         tipo     : this.verSeleccion,
         nom_prov : this._nameProv,
@@ -164,7 +202,7 @@ export class MasterProvComponent implements OnInit {
         ciudad   : this._ciudad,
         pagweb   : this._web,
         cod_prov : xcod+'_'+this._cedula,
-        cod_cias: this.xx
+        cod_cias: xCiaCod
     }
 
     console.log(this.proveeArr)
@@ -252,7 +290,7 @@ export class MasterProvComponent implements OnInit {
     this.btnPost    = false;
     this.btnPut     = true;
 
-    this.changeModsView(true, false, '#361E45', '#5C277B', '#0EC9BB', 'whitesmoke', false)
+    this.changeModsView(true, false, '#361E45', '#5C277B', '#0EC9BB', 'whitesmoke', false);
 
   }
 
@@ -359,7 +397,13 @@ export class MasterProvComponent implements OnInit {
   public _minutos: number = 0;
   saveServs(cod_prov: string) {
 
+      if( this._cost_add == null ) {
+        this._cost_add = 0.0;
+      }
 
+      if( this._cos_serv == null ) {
+        this._cos_serv = 0.0;
+      }
 
       this.servOrt = {
         nom_serv  : this._nameServ,
@@ -374,27 +418,27 @@ export class MasterProvComponent implements OnInit {
         cod_serv  : 'SERV-'+this.tgen.generateRandomString(20)+'-'+cod_prov
       }
 
-
-
-      console.log(this.servOrt);
+      // console.log(this.servOrt);
 
       this.OrtoservServices.savServs(this.servOrt).subscribe({
-        next: (x) => {
-          console.log(x)
-        }, error: () => {
-          Toast.fire({
-            icon: 'error',
-            title: 'No se pudo añadir este item'
-          });
-        }, complete: () => {
-          Toast.fire({
-            icon: 'success',
-            title: 'Item añadido correctamente al proveedor'
-          });
-          this.cleanServices();
-          this.getServicios(cod_prov, 'nom_serv', 'a', 'desc')
+          next: (x) => {
+            console.log(x)
+          }, error: () => {
+            Toast.fire({
+              icon: 'error',
+              title: 'No se pudo añadir este item'
+            });
+          }, complete: () => {
+            Toast.fire({
+              icon: 'success',
+              title: 'Item añadido correctamente al proveedor'
+            });
+            this.cleanServices();
+            this.getServicios(cod_prov, 'cod_prov', '_', 'desc');
+            this.btnPost = false;
+          }
         }
-      })
+      )
   }
 
   public xArrServs: any = [];
@@ -403,6 +447,10 @@ export class MasterProvComponent implements OnInit {
     this.OrtoservServices.getServs(cprov, properties, data, order).subscribe({
       next:(servs)=>{
         this.xArrServs = servs;
+        console.log('Cod. Proveedor: ' + cprov);
+        console.log('Properties: ' + properties);
+        console.log('Data: ' + data);
+        console.log('order: ' + order);
       }, error: () => {
 
       }, complete: () => {
@@ -436,6 +484,16 @@ export class MasterProvComponent implements OnInit {
 
   putServices(cod_prov: string, id: number) {
 
+    this._bool_des_server = true;
+
+    if( this._cost_add == null ) {
+      this._cost_add = 0.0;
+    }
+
+    if( this._cos_serv == null ) {
+      this._cos_serv = 0.0;
+    }
+
     this.servOrt = {
 
       nom_serv  : this._nameServ,
@@ -468,8 +526,8 @@ export class MasterProvComponent implements OnInit {
           title: 'Servicio se ha actualizado correctamente'
         });
         this.cleanServices();
-        this.getServicios(cod_prov, 'nom_serv', 'a', 'desc')
-
+        this.getServicios(cod_prov, 'cod_prov', '_', 'desc')
+        this._bool_des_server = false;
       }
     })
   }
@@ -489,7 +547,7 @@ export class MasterProvComponent implements OnInit {
           title: 'Servicio se ha eliminado correctamente'
         });
         this.cleanServices();
-        this.getServicios(cod_prov, 'nom_serv', 'a', 'desc');
+        this.getServicios(cod_prov, 'cod_prov', '_', 'desc');
       }
     })
   }
@@ -507,7 +565,7 @@ export class MasterProvComponent implements OnInit {
     this._dias = 0;
     this._horas = 0;
     this._minutos = 0;
-    this.btnPost = true;
+    this.btnPost = false;
     this.btnPut = false;
     this._colorProv = '#EFEFEF';
   }
@@ -532,7 +590,7 @@ export class MasterProvComponent implements OnInit {
     this._ffinal = '';
     this._cost_add = 0;
     this._observ = '';
-    this.btnPost = true;
+    this.btnPost = false;
     this.btnPut = false;
     this._colorProv = '#EFEFEF';
   }

@@ -15,6 +15,29 @@
     justify-content: space-between;
 }
 
+.boxdetail {
+    width: 230px;
+    height: 105px;
+    background-color: #444444;
+    border-radius: 7px;
+}
+
+.getds {
+    cursor: pointer;
+    transition: ease all 0.5s;
+}
+
+.getds:hover {
+    cursor: pointer;
+    transition: ease all 0.5s;
+    background-color: rgb(255, 200, 0);
+}
+
+.calc {
+    border-top: solid 3px orange;
+    border-bottom: solid 3px orange;
+}
+
 .btdel {
     background-color: orangered;
     border-radius: 10px;
@@ -37,7 +60,7 @@
 }
 
 #tbFix {
-    height: 350px !important;
+    height: 325px !important;
 }
 
 .provSends {

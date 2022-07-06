@@ -25,6 +25,10 @@ export class ProductServsService {
     return this.http.get( this.apiUrl + 'ProdMast/SelProdMaster/'+top+'/'+properties+'/'+data+'/'+order+'/'+ccia )
   }
 
+  getImgProds( ccia: string, cprod: string) {
+    return this.http.get( this.apiUrl + 'ProdMast/SelImgMaster/' + ccia + '/' + cprod )
+  }
+
   delProds( id:number ) {
     return this.http.get( this.apiUrl + 'ProdMast/DelProdMaster/' + id );
   }

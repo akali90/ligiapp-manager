@@ -55,7 +55,7 @@ export class MycompaniesComponent implements OnInit {
   public _color_btnA: string = '#5C277B';
   public _color_btnB: string = '#422A4F';
   public _color_bord_A: string = '#0EC9BB';
-  public _color_bord_B: string = 'transparent';
+  public _color_bord_B: string = 'white';
 
   constructor( public countries: CountriesrestapiService, public popUp: PopUpModsService, public compan: MycompaniesService, public tk: TokengenerateService ) { }
 
@@ -103,8 +103,6 @@ export class MycompaniesComponent implements OnInit {
       console.log(this.countriesArr);
     })
   }
-  //------------------------------------------------------------------
-
 
   //#region INTERFAZ GENERA FUNCIONAMIENTO INICIO
   public _colorProv: string = '';

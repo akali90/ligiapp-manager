@@ -7,6 +7,12 @@ import { TokengenerateService } from '../tokengenerate.service';
 import { OrtoprovService } from '../ortoprov.service';
 import { OrtoservService } from '../ortoserv.service';
 import { CreateprodService } from '../module-inventary/services/createprod.service';
+import { CountriesrestapiService } from '../countriesrestapi.service';
+import { FormBuilder, FormControl } from '@angular/forms';
+import { FloatLabelType } from '@angular/material/form-field';
+
+// import * as am4core from "@amcharts/amcharts4/core";
+// import * as am4charts from "@amcharts/amcharts4/charts";
 
 const Toast = Swal.mixin({
   toast: true,
@@ -53,18 +59,22 @@ export class GestprodsComponent implements OnInit {
   public _color_btnA: string = '#5C277B';
   public _color_btnB: string = '#422A4F';
   public _color_bord_A: string = '#0EC9BB';
-  public _color_bord_B: string = 'transparent';
+  public _color_bord_B: string = 'white';
 
   public _ftitle: any = '';
   public _fparagraph: any = '';
   public xx: any = sessionStorage.getItem('Companies');
 
-  constructor( private Prod: ProductServsService,
+  public _dis_cost_prod: boolean = true;
+
+  constructor( public countries: CountriesrestapiService,
+               private Prod: ProductServsService,
                private tk: TokengenerateService,
                private compan: MycompaniesService,
                public Oservices: OrtoprovService,
                public OrtoservServices: OrtoservService,
-               public cprodService: CreateprodService ) { }
+               public cprodService: CreateprodService,
+               private _formBuilder: FormBuilder ) { }
 
   public x: any = sessionStorage.getItem('Companies');
 
@@ -103,6 +113,135 @@ export class GestprodsComponent implements OnInit {
 
   }
 
+// API PARA RELLENO DE PAISES
+  //------------------------------------------------------------------
+  public countriesArr: any = [];
+  public _name_countrie: string = '';
+  public cant_paises: number = 0;
+  getCountries() {
+
+    this._show_spinner = true;
+
+    console.log('paises')
+    this.countries.getApiRestCountries().subscribe( { next: (countries) => {
+      this.countriesArr = countries;
+      this.cant_paises = this.countriesArr.length;
+      // console.log(this.countriesArr);
+    }, error: () => {
+      this._show_spinner = false;
+      Swal.fire(
+        'Tenemos pequeños problemas al cargar los países',
+        'Puedes digitarlo manualmente, muchas gracias, esperemos podamos retomar la conexión hacia este servicio web externo',
+        'question'
+      )
+    }, complete: () => {
+      this._show_spinner = false;
+    }
+  })
+  }
+
+  asignCountries(countrie: string) {
+    // this._pais = countrie;
+  }
+
+  getNameCountries(name: string) {
+    this.countries.getApiRestCountriesByName(name).subscribe( countriesn => {
+      this.countriesArr = countriesn;
+      console.log(this.countriesArr);
+    })
+  }
+
+  //#exampleModal3
+  public _dis_patron: boolean = true;
+  public _id_modal: string = ''
+  detectPrice() {
+    let xdiv = document.getElementById('dpatron') as HTMLButtonElement;
+    console.log(xdiv);
+    console.log(this._cost_prod);
+    if( this._cost_prod > 0) {
+      this._dis_patron = false;
+      //data-bs-toggle="modal" [data-bs-target]="_id_modal"
+
+      xdiv.setAttribute('data-bs-toggle', 'modal')
+      xdiv.setAttribute('data-bs-target', '#exampleModal3')
+    }
+    else {
+      this._dis_patron = true;
+      xdiv.setAttribute('data-bs-toggle', '')
+      xdiv.setAttribute('data-bs-target', '')
+    }
+  }
+
+  hideRequiredControl = new FormControl(false);
+  floatLabelControl = new FormControl('manual' as FloatLabelType);
+  options = this._formBuilder.group({
+    hideRequired: this.hideRequiredControl,
+    floatLabel: this.floatLabelControl,
+  });
+  public icon_sel:string = '$';
+  public _PVP: number = 0.0;
+  public _Porc_Gan: number = 0.0;
+  getFloatLabelValue(): FloatLabelType {
+    console.log(this.floatLabelControl.value);
+    if(this.floatLabelControl.value == 'manual') {
+      this.icon_sel = '%'
+    }
+    else {
+      this.icon_sel = '$'
+    }
+    return this.floatLabelControl.value || 'manual';
+  }
+
+  public subtot: number = 0.0;
+  public totDesc: number = 0.0;
+  public desc_s: number = 0.0;
+  asign_price(_cost_prod: number, _descu: number, xnomProd: string, prec_acum: number) {
+
+    localStorage.setItem('precio-prod-asign', _cost_prod.toString());
+    localStorage.setItem('descu-prod-asign', _descu.toString());
+
+    this.subtot = _cost_prod ;
+    this.totDesc =- ( _cost_prod * (_descu / 100));
+    this.desc_s = _descu;
+    localStorage.setItem('calc-descu-prod', this.subtot.toString());
+
+    let xcia: any = sessionStorage.getItem('Companies')
+
+    this.getCProds(xcia, xnomProd);
+
+    this._nom_prod = xnomProd;
+
+    this._cost_prod = _cost_prod;
+    this._descu = _descu;
+
+    this._PVP = _cost_prod;
+    this.sumatoriaCostServs = prec_acum;
+    console.log(prec_acum)
+    console.log(this.sumatoriaCostServs);
+
+    this.xnumbpoc = ((this._PVP - this.sumatoriaCostServs)/this.sumatoriaCostServs)*100;
+
+    // console.log('==============================');
+    // console.log(this.arrProdC[0].costoTotal);
+
+  }
+
+  public sumCostArr: any = [];
+  gCostProd(naprod: string, ccia: string) {
+    this.cprodService.getCostProd(naprod, ccia).subscribe( {
+      next:(x) => {
+        this.sumCostArr = x;
+      },
+      error:() => {
+        console.warn('Algo ha pasado en traer la sumatoria');
+      },
+      complete: () => {
+        console.log(this.sumCostArr);
+      }
+    } )
+  }
+
+
   public arrProdCreate: any = [];
   createProd(servicio:string, costo: number) {
     this.arrProdCreate.push([{servicio: servicio, costo: costo}]);
@@ -114,15 +253,15 @@ export class GestprodsComponent implements OnInit {
   }
 
     //#region INTERFAZ GENERA FUNCIONAMIENTO INICIO
-    changeModsView(obA:boolean, obB:boolean, cola: string, colb: string, bordA: string, bordB: string, btnPost: boolean) {
-      this._show_part_ing = obA;
-      this._show_part_reg = obB;
-      this._color_btnA = cola;
-      this._color_btnB = colb;
-      this._color_bord_A = bordA;
-      this._color_bord_B = bordB;
-      this.btnPost = btnPost;
-    }
+  changeModsView(obA:boolean, obB:boolean, cola: string, colb: string, bordA: string, bordB: string, btnPost: boolean) {
+    this._show_part_ing = obA;
+    this._show_part_reg = obB;
+    this._color_btnA = cola;
+    this._color_btnB = colb;
+    this._color_bord_A = bordA;
+    this._color_bord_B = bordB;
+    this.btnPost = btnPost;
+  }
 
   public proveeArrGet: any = [];
   public proveServArrGet: any = [];
@@ -192,8 +331,10 @@ export class GestprodsComponent implements OnInit {
       },
       complete: () => {
         this._show_spinner = false;
+        // localStorage.removeItem('_nom_prod');
         let xnomProd: any = localStorage.getItem('_nom_prod');
         this.getCProds(xCcia, xnomProd);
+        // this.gCostProd(xnomProd, xCcia);
       }
     })
 
@@ -223,25 +364,63 @@ export class GestprodsComponent implements OnInit {
 
   public arrProdC: any = [];
   public cantCProd: number = 0;
+  public sumatoriaCostServs: number = 0.0;
+  public _color_numb: string = 'whitesmoke';
+  public xnumbpoc: number = 0.0;
   getCProds(ccia: string, nprods: string) {
     this._show_spinner = true;
+    console.log(ccia + '  ' + nprods);
     this.cprodService.getCreateProds( ccia, nprods ).subscribe({
       next: (prod) => {
         this.arrProdC = prod;
-        console.log(this.arrProdC.length);
         this.cantCProd = this.arrProdC.length;
+        console.log('=================PROD=========================');
+        console.log(this.arrProdC);
+        console.log('==============================================');
+        // if( this.arrProdC.length = 0 ) {
+        //   // this.sumatoriaCostServs = 0.0;
+        //   alert('HEMOS LLEGADO A 0')
+        // }
       },
       error: () => {
         this._show_spinner = false;
       },
       complete: () => {
         this._show_spinner = false;
+        let arr = [];
+        for(let n = 0;  n < this.arrProdC.length; n++ ) {
+
+          let xy = this.arrProdC[n].costoTotal;
+          //console.log(xy)
+          arr.push(xy);
+          console.log(arr)
+          let xx = (previousValue: number, currentValue: number) => previousValue + currentValue;
+          this.sumatoriaCostServs = arr.reduce(xx);
+
+          localStorage.setItem('tot_sumatoria', this.sumatoriaCostServs.toString());
+
+          //console.log(this.sumatoriaCostServs);
+        }
         // console.log('Obteniendo la data');
         // console.log(this.arrProdC);
         // this.cantCProd = this.arrCProds.length;
         // console.log(this.cantCProd);
       }
     })
+  }
+
+  detextColor(xnumbpoc:number) {
+    console.log('activando: ' + xnumbpoc);
+    if( xnumbpoc <= 0 ) {
+      this._color_numb = 'orangered';
+    }
+    if ( xnumbpoc > 0 && xnumbpoc <= 50) {
+      this._color_numb = 'orange';
+    }
+    if( xnumbpoc > 50  ) {
+      this._color_numb = 'yellowgreen';
+    }
+
   }
 
   public xArrServs: any = [];
@@ -364,8 +543,9 @@ export class GestprodsComponent implements OnInit {
           icon: 'success',
           title: 'Producto guardado con éxito'
         })
-
+        localStorage.removeItem('_nom_prod');
         this.getProducts(75, 'cod_prod', '_', 'asc', this.x);
+        this.getCProds('-', '-');
         this.cleanUp();
 
       }
@@ -374,7 +554,7 @@ export class GestprodsComponent implements OnInit {
 
   public arrUpProd: any = [];
   upProdDB() {
-
+    this._show_spinner = true
     let x: any = sessionStorage.getItem('Companies');
     let codec_prod: any =localStorage.getItem('Codec_edit_prod');
     let id: any =localStorage.getItem('ID-PROD');
@@ -396,7 +576,6 @@ export class GestprodsComponent implements OnInit {
       id: id
     }
 
-
     this.Prod.putProds(id,this.arrUpProd).subscribe({
       next:(x)=>{
         console.log(x);
@@ -406,13 +585,14 @@ export class GestprodsComponent implements OnInit {
           icon: 'error',
           title: 'Producto ha sido guardado con éxito'
         })
+        this._show_spinner = false
       },
       complete:()=>{
         Toast.fire({
           icon: 'success',
           title: 'Producto guardado con éxito'
         })
-
+        this._show_spinner = false
         this.getProducts(75, 'cod_prod', '_', 'asc', this.x);
         this.cleanUp();
 
@@ -431,6 +611,11 @@ export class GestprodsComponent implements OnInit {
     this._uso = '';
     this._grupo = '';
     this._sgrupo = '';
+    this._PVP = 0.0;
+    this.xnumbpoc = 0.0;
+    this.sumatoriaCostServs = 0.0;
+    this.subtot = 0.0;
+    this.totDesc = 0.0;
     this.btnPost = true;
     this.btnPut = false;
     this._colorProv = '#EFEFEF';
@@ -440,13 +625,18 @@ export class GestprodsComponent implements OnInit {
 
   }
 
-  asignData(_imgg:string, id:number, _nom_prod: string, _cost_prod: number,
+  asignData(ccia: string, _imgg:string, id:number, _nom_prod: string, _cost_prod: number,
     _descu:number, _pres_prod: string, _desc_prod: string, _color: string, _uso: string, _grupo: string
     ,_sgrupo: string, codec_edit: string) {
 
+    console.log('asign data esta activado');
+    //_desc_prod
+    // console.log(_imgg);
     localStorage.setItem('ID-PROD', (id).toString());
     localStorage.setItem('Codec_edit_prod', codec_edit);
-
+    console.log(codec_edit)
+    console.log(ccia)
+    this.getImg( ccia, codec_edit );
     this._nom_prod      = _nom_prod;
     this.picc_servicio  = _imgg;
     this._cost_prod = _cost_prod;
@@ -461,9 +651,31 @@ export class GestprodsComponent implements OnInit {
     this.btnPost        = false;
     this.btnPut         = true;
 
-    const yy: any = document.getElementById('boxImg') as HTMLDivElement
-    yy.style.backgroundImage = `url(${_imgg})`;
+    console.log(1)
+    setTimeout(()=>{
+      let yy = document.getElementById('boxImg') as HTMLDivElement
+      console.log(yy);
+      yy.style.backgroundImage = `url(${this.picc_servicio})`;
+    },1000)
+    console.log(2)
+    this.changeModsView(true, false, '#361E45', '#5C277B', '#0EC9BB', 'whitesmoke', false);
+    // this.changeModsView(false, true, '#361E45', '#5C277B', 'whitesmoke', '#0EC9BB', false);
+    console.log(3)
+  }
 
+  public arrProdImg: any = [];
+  getImg(ccia: string,cprod: string) {
+    this._show_spinner = true;
+    this.Prod.getImgProds(ccia,cprod).subscribe(
+      x => {
+
+        this.arrProdImg = x;
+        // console.log(x)
+        this.picc_servicio = this.arrProdImg[0].img_prods;
+        this._show_spinner = false;
+
+      }
+    )
   }
 
   asignCompany( companie: string, ncomp: string ) {

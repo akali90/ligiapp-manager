@@ -18,11 +18,15 @@ export class CreateprodService {
 
   // SelProdCreate/
   getCreateProds( ccia: string, nprods: string ) {
-    return this.http.get( this.apiUrl + 'SelProdCreate/' + nprods + '/' + ccia );
+    return this.http.get( this.apiUrl + 'SelProdCreate/' + ccia + '/' + nprods );
   }
 
   delCreateProds( cprov: string, codServs: string, codProd: string, id: number ) {
     return this.http.get( this.apiUrl + 'DelProdCreate/' + cprov + '/' + codServs + '/' + codProd + '/' + id );
+  }
+
+  getCostProd(naprod: string, ccia: string) {
+    return this.http.get( this.apiUrl + 'CostProdCreate/' + naprod + '/' + ccia )
   }
 
 }

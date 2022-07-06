@@ -325,7 +325,7 @@ body {
 
 .sector-img {
     // border: solid 1px gray;
-    width: 45%;
+    width: 40%;
 }
 
 .data {
@@ -488,9 +488,9 @@ input {
 }
 
 *::-webkit-scrollbar {
-    width: 8px;
+    width: 10px;
     /* Tamaño del scroll en vertical */
-    height: 8px;
+    height: 10px;
     /* Tamaño del scroll en horizontal */
     // display: none;
     /* Ocultar scroll */
@@ -502,26 +502,30 @@ input {
 
 // /* Ponemos un color de fondo y redondeamos las esquinas del thumb */
 *::-webkit-scrollbar-thumb {
-    background: rgb(124, 124, 124);
+    transition: ease all 0.5s;
+    background: rgb(60, 162, 230);
     border-radius: 4px;
 }
 
 // /* Cambiamos el fondo y agregamos una sombra cuando esté en hover */
 *::-webkit-scrollbar-thumb:hover {
-    background: #626262;
-    box-shadow: 0 0 2px 1px rgba(13, 215, 191, 0.2);
+    transition: ease all 0.5s;
+    background: #3f3f3f;
+    box-shadow: 0 0 2px 1px rgba(14, 14, 14, 0.2);
 }
 
 // /* Cambiamos el fondo cuando esté en active */
 *::-webkit-scrollbar-thumb:active {
-    background-color: #0de5c1;
+    background-color: #3f3f3f;
+    transition: ease all 0.5s;
 }
 
 
 /* Ponemos un color de fondo y redondeamos las esquinas del track */
 
 *::-webkit-scrollbar-track {
-    background: #e1e1e1;
+    transition: ease all 0.5s;
+    background: rgb(31, 54, 69);
     border-radius: 4px;
 }
 

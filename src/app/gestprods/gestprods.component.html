@@ -2,25 +2,48 @@
 <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title d-flex align-items-center" id="exampleModalLabel">
-                    <mat-icon>account_tree</mat-icon> Asignación:</h2>
+            <div class="modal-header" style="background-color: rgb(206, 206, 206);">
+                <div class="d-flex flex-column justify-content-center align-items-start">
+                    <h2 class="modal-title d-flex align-items-center" id="exampleModalLabel">
+                        <mat-icon>account_tree</mat-icon> Asignación:</h2>
+                    <div class="dis p-2 bg-primary rounded-2 fs-5 text-light">
+                        <strong> {{_nom_prod}} </strong>
+                    </div>
+                </div>
+                <!-- <div class=" bg-dark text-light p-2 rounded-3" style="height: 67.97px;">
+                    <label>Tipo de cálculo de precio: </label> <br>
+                    <mat-radio-group class="w-100 " [formControl]="floatLabelControl">
+                        <mat-radio-button (change)="getFloatLabelValue()" value="porcentaje">Porcentaje</mat-radio-button>
+                        <mat-radio-button (change)="getFloatLabelValue()" value="manual">Manual</mat-radio-button>
+                    </mat-radio-group>
+                </div> -->
+                <div class="d-flex rounded-3 bg-warning m-2" style=" box-shadow: 0px 5px 10px rgba(0,0,0,0.5); height: 67.97px; border: solid 1px rgb(161, 161, 161);">
+                    <mat-form-field appearance="fill" class="p-2">
+                        <mat-label>
+                            <strong class="text-primary">({{icon_sel}})</strong> Precio de venta del Producto:
+                        </mat-label>
+                        <input matInput type="number" [(ngModel)]="_cost_prod" (keyup)="subtot = _cost_prod; _PVP = subtot; _Porc_Gan = _PVP; xnumbpoc = ((_PVP - sumatoriaCostServs)/sumatoriaCostServs)*100; detextColor(xnumbpoc) " [disabled]="_lock">
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" class="p-2">
+                        <mat-label>Descuento del Producto: <strong>%</strong></mat-label>
+                        <input matInput type="number" [(ngModel)]="_descu" (keyup)="totDesc = ((_descu / 100) * subtot) * -1; _PVP = subtot + totDesc; xnumbpoc = ((_PVP - sumatoriaCostServs)/sumatoriaCostServs)*100; detextColor(xnumbpoc)" [disabled]="_lock">
+                    </mat-form-field>
+                </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <div class="modal-body d-flex">
                 <div class="arm-container p-2 h-100">
-                    <div class="dis">
-                        Producto: <strong> {{_nom_prod}} </strong>
-                    </div>
-                    <hr>
-                    <div class="prod-body" style="height: 450px; overflow: auto;">
+
+                    <!-- <hr> -->
+                    <div class="prod-body" style="height: 415px; overflow: auto;">
                         Proveedores necesitados para generar este producto: <strong> ({{cantCProd}}) </strong>.
                         <div *ngFor="let xx of arrProdC" class="xx">
                             <div class="dd">
                                 <li>
-                                    <div class="btn btn-outline-dark w-100 d-flex align-items-center" (dblclick)="dCprod(xx.cod_prov, xx.cod_serv, xx.cod_prod, xx.id)">
-                                        <mat-icon>badge</mat-icon> {{xx.nom_prov | titlecase }}
+                                    <div class="btn btn-outline-dark w-100 d-flex justify-content-center align-items-start flex-column" (dblclick)="dCprod(xx.cod_prov, xx.cod_serv, xx.cod_prod, xx.id)">
+                                        <span style="border-bottom: solid 1px gray;" class="d-flex align-items-center"> <mat-icon>badge</mat-icon> {{xx.nom_prov | titlecase }} </span>
+                                        <span class="text-secondary" style="font-size: 9pt;"> {{xx.desc_serv}} </span>
                                     </div>
                                 </li>
                                 <li class="d-flex justify-content-between">Subtotal: <strong> $ {{xx.cos_serv}} </strong></li>
@@ -28,9 +51,49 @@
                                 <li class="d-flex justify-content-between">Total: <strong> $ {{xx.costoTotal}} </strong> </li>
                             </div>
                         </div>
+
+                    </div>
+                    <div class="calc d-flex flex-column p-2">
+                        <!-- <span>Cálculo de ganancia:</span> -->
+                        <div class="d-flex justify-content-between">
+                            <span>P. Venta: </span><strong>$ {{subtot | number: '1.2-2' }}</strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Desc. Aplicado: (%{{desc_s}}) </span><strong>$ {{totDesc | number: '1.2-2' }}</strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Sub. Total: </span><strong>$ {{ subtot + totDesc | number: '1.2-2' }}</strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>P. Acum. Prov: </span><strong>$ {{ sumatoriaCostServs | number: '1.2-2' }}</strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Ganacia neta: </span><strong class="fs-6 text-warning bg-black p-2 rounded-2">$ {{ (subtot + totDesc) - sumatoriaCostServs | number: '1.2-2' }}</strong>
+                        </div>
                     </div>
                 </div>
                 <div class="xB w-100">
+
+                    <div class="d-flex justify-content-between">
+                        <div class="boxdetail d-flex flex-column">
+                            <label class="text-light d-flex align-items-center p-2"><mat-icon>monetization_on</mat-icon> P.V.P.:</label>
+                            <span [ngStyle]="{'color': '#10C7EB'}" class=" p-2 d-flex justify-content-center align-items-center">
+                              $<strong style="font-size: 30pt;">{{_PVP}}</strong>
+                            </span>
+                        </div>
+                        <div class="boxdetail">
+                            <label class="text-light d-flex align-items-center p-2"><mat-icon>payments</mat-icon> Porcentaje de ganancia:</label>
+                            <span [ngStyle]="{'color': _color_numb}" class=" p-2 d-flex justify-content-center align-items-center">
+                            <strong style="font-size: 30pt;" >{{ xnumbpoc | number: '1.2-2' }}%</strong>
+                          </span>
+                        </div>
+                        <div class="boxdetail">
+                            <label class="text-light d-flex align-items-center p-2"><mat-icon>savings</mat-icon> Ganancia neta:</label>
+                            <span [ngStyle]="{'color': _color_numb}" class=" p-2 d-flex justify-content-center align-items-center">
+                            $<strong style="font-size: 30pt;" >{{ _PVP - sumatoriaCostServs | number: '1.2-2' }}</strong>
+                          </span>
+                        </div>
+                    </div>
                     <mat-tab-group class="w-100">
                         <mat-tab label="Proveedor de servicios" (click)="_show_servs_provs = !_show_servs_provs">
                             <div class="searck">
@@ -76,7 +139,7 @@
                                         </span>
                                     </div>
 
-                                    <div class="d-flex flex-column h-100 animate__animated animate__fadeInUp" style="width: 300px; height: 350px !important; overflow-y: auto;">
+                                    <div class="d-flex flex-column h-100 animate__animated animate__fadeInUp" style="width: 300px; height: 288px !important; overflow-y: auto;">
 
                                         <div *ngFor="let xserv of xArrServs" class="servsProv p-2 rounded-2 m-2 bg-primary text-light">
 
@@ -93,7 +156,7 @@
                                                         <th class="bg-warning" style="font-size: 8pt;">D</th>
                                                         <th class="bg-warning" style="font-size: 8pt;">H</th>
                                                         <th class="bg-warning" style="font-size: 8pt;">Costo</th>
-                                                        <th class="bg-warning" style="font-size: 8pt;">C. Add.</th>
+                                                        <th class="bg-warning" style="font-size: 8pt;">I.V.A. Tot.</th>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
@@ -101,7 +164,7 @@
                                                             <td class="bg-warning text-dark" style="font-size: 9pt;"><strong>{{xserv.horas}}                       </strong></td>
                                                             <td class="bg-warning text-dark" style="font-size: 9pt;"><strong>{{xserv.minutos}}                     </strong></td>
                                                             <td class="bg-warning text-dark" style="font-size: 9pt;"><strong>$ {{xserv.cos_serv | number: '1.2-2'}}</strong></td>
-                                                            <td class="bg-warning text-dark" style="font-size: 9pt;"><strong>$ {{xserv.cost_add | number: '1.2-2'}}</strong></td>
+                                                            <td class="bg-warning text-dark" style="font-size: 9pt;"><strong>$ {{xserv.cos_serv+(xserv.cos_serv*(xserv.cost_add / 100)) | number: '1.2-2'}}</strong></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -121,7 +184,7 @@
                                 <input matInput type="text" [(ngModel)]="_search" (keyup.enter)="this.getProveedores('materiales', 'nom_prov', _search, 'asc', this.xx);">
                             </mat-form-field>
                             <div class="d-flex w-100">
-                                <div class="tableFixHead w-100 ">
+                                <div class="tableFixHead w-100 " style="height: 325px !important;">
                                     <table>
                                         <thead>
                                             <tr>
@@ -150,7 +213,7 @@
                                       </span>
                                     </div>
 
-                                    <div class="d-flex flex-column h-100 animate__animated animate__fadeInUp" style="width: 300px; height: 350px !important; overflow-y: auto;">
+                                    <div class="d-flex flex-column h-100 animate__animated animate__fadeInUp" style="width: 300px; height: 288px !important; overflow-y: auto;">
 
                                         <div *ngFor="let xserv of xArrServs" class="servsProv p-2 rounded-2 m-2 bg-primary text-light">
 
@@ -167,7 +230,7 @@
                                                         <th class="bg-warning" style="font-size: 8pt;">D</th>
                                                         <th class="bg-warning" style="font-size: 8pt;">H</th>
                                                         <th class="bg-warning" style="font-size: 8pt;">Costo</th>
-                                                        <th class="bg-warning" style="font-size: 8pt;">C. Add.</th>
+                                                        <th class="bg-warning" style="font-size: 8pt;">Tot.I.V.A.</th>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
@@ -175,7 +238,7 @@
                                                             <td class="bg-warning text-dark" style="font-size: 9pt;"><strong>{{xserv.horas}}                       </strong></td>
                                                             <td class="bg-warning text-dark" style="font-size: 9pt;"><strong>{{xserv.minutos}}                     </strong></td>
                                                             <td class="bg-warning text-dark" style="font-size: 9pt;"><strong>$ {{xserv.cos_serv | number: '1.2-2'}}</strong></td>
-                                                            <td class="bg-warning text-dark" style="font-size: 9pt;"><strong>$ {{xserv.cost_add | number: '1.2-2'}}</strong></td>
+                                                            <td class="bg-warning text-dark" style="font-size: 9pt;"><strong> ({{xserv.cost_add}}%)$ {{ xserv.cos_serv + (xserv.cos_serv * (xserv.cost_add / 100)) | number: '1.2-2'}}</strong></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -265,18 +328,18 @@
     </div>
 </div>
 
-<div class="ds animate__animated animate__fadeInRight mt-3" *ngIf="_show_part_ing">
-    <div class="comps w-100 m-2 bg-secondary p-1 text-light" style="height: 70px;">
-        <span class="p-3">Mi empresa: <strong>{{labelMessage | uppercase}}</strong></span>
+<div class="ds animate__animated animate__fadeInRight mt-3 w-100" *ngIf="_show_part_ing">
+    <div class="comps rounded-2 w-100 m-2 bg-secondary p-1 text-light" style="height: 70px;">
+        <span class="p-3">Mi empresa: <strong class="fs-5 text-warning">{{labelMessage | uppercase}}</strong></span>
         <button *ngIf="btnPost" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" class="w-100 d-flex align-items-center justify-content-center" mat-raised-button color="warn">
       <mat-icon>leaderboard</mat-icon>Escoger mi compañía
     </button>
     </div>
     <div class="sector-img">
         <div class="inpfile w-100">
-            <label for="img" class="lb w-100">
+            <label for="img" class="lb w-100 d-flex flex-column align-items-center justify-content-center">
               Click en el siguiente recuadro, sube una imagen de tu producto en los siguientes formatos <strong> (.JPG o .PNG): </strong><hr>
-              <div class="img w-100" id="boxImg" ></div>
+              <div class="img rounded-2" style="width: 300px; height: 325px;" id="boxImg" ></div>
             </label><br>
             <input type="file" (change)="encodeImageFileAsURLA('img', 'boxImg')" id="img" [(ngModel)]="_fServ" name="_fServ" class="inp-control">
         </div>
@@ -294,25 +357,29 @@
             <mat-label>Prescripción del producto: <span class="note bg-primary p-1 text-light">(Para quien va dirijido este producto)</span> </mat-label>
             <input matInput type="text" [(ngModel)]="_pres_prod" [disabled]="_lock">
         </mat-form-field>
+        <button style="height: 45px;" data-bs-toggle="modal" data-bs-target="#exampleModal3" (click)="asign_price(_cost_prod, _descu,'', 0.0)" id="dpatron" mat-raised-button color="primary" class="d-flex w-100 align-items-center">
+          <mat-icon>search</mat-icon>Asignar proveedores y servicios a este producto
+        </button>
         <mat-form-field appearance="fill" class="w-100">
             <mat-label>Costo del Producto:</mat-label>
             <input matInput type="number" [(ngModel)]="_cost_prod" [disabled]="_lock">
         </mat-form-field>
-        <mat-form-field appearance="fill" class="w-100">
-            <mat-label>Descuento del Producto:</mat-label>
-            %.<input matInput type="number" [(ngModel)]="_descu" [disabled]="_lock">
-        </mat-form-field>
-    </div>
-    <div class="d-flex justify-content-between flex-wrap">
-        <mat-form-field appearance="fill" class="inputsResp p-1" style="width: 20%;">
-            <mat-label>Color:</mat-label>
-            <input matInput type="text" [(ngModel)]="_color" [disabled]="_lock">
-        </mat-form-field>
-        <mat-form-field appearance="fill" class="inputsResp w-50 p-1">
-            <mat-label>Uso:</mat-label>
-            <input matInput type="text" [(ngModel)]="_uso" [disabled]="_lock">
-        </mat-form-field>
-        <mat-form-field appearance="fill" class="inputsResp p-1" style="width: 28%;">
+        <!-- <mat-form-field appearance="fill" class="w-100">
+            <mat-label>% Descuento del Producto:</mat-label>
+            <input matInput type="number" [(ngModel)]="_descu" [disabled]="_lock">
+        </mat-form-field> -->
+        <div class="d-flex w-100">
+            <div class="inputsResp p-1" style="width: 20%;">
+                <label for="color">Color Hex.: <strong>{{_color}}</strong></label>
+                <input id="color" type="color" class="w-100" [(ngModel)]="_color" [disabled]="_lock">
+            </div>
+            <mat-form-field appearance="fill" class="inputsResp w-75 p-1">
+                <mat-label>Uso:</mat-label>
+                <input matInput type="text" [(ngModel)]="_uso" [disabled]="_lock">
+            </mat-form-field>
+
+        </div>
+        <mat-form-field appearance="fill" class="inputsResp p-1" style="width: 35%;">
             <mat-label>Grupo:</mat-label>
             <input matInput type="text" [(ngModel)]="_grupo" [disabled]="_lock">
         </mat-form-field>
@@ -320,18 +387,22 @@
             <mat-label>Sub Grupo:</mat-label>
             <input matInput type="text" [(ngModel)]="_sgrupo" [disabled]="_lock">
         </mat-form-field>
-        <button style="height: 45px;" data-bs-toggle="modal" data-bs-target="#exampleModal3" mat-raised-button color="primary" class="d-flex w-50 align-items-center">
-          <mat-icon>search</mat-icon>Escojer proveedores
-        </button>
-        <div class="provchoice p-4 w-100 mb-2 d-flex justify-content-around align-items-center" style="background-color: #522963;">
-            <!--  -->
+    </div>
+    <div class="d-flex justify-content-between flex-wrap w-100">
+        <!-- <mat-form-field appearance="fill">
+            <mat-label>Color:</mat-label>
+            <input matInput type="colorpicker" [(ngModel)]="_color" [disabled]="_lock">
+        </mat-form-field> -->
+        <!-- [disabled]="_dis_patron" -->
+
+        <!-- <div class="provchoice p-4 w-100 mb-2 d-flex justify-content-around align-items-center" style="background-color: #522963;">
             <div style="box-shadow: 0px 5px 10px rgba(0,0,0,0.5); border: solid 1px gray;" class="provSends d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#exampleModal3" *ngFor="let xx of arrProdC">
                 <span>{{xx.nom_prov | titlecase}}</span>
                 <div (click)="dCprod(xx.cod_prov, xx.cod_serv, xx.cod_prod, xx.id)" class="btdel d-flex align-items-center justify-content-center">
                     <mat-icon>cancel</mat-icon>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </div>
 <div class="btnsets w-100">
@@ -362,6 +433,7 @@ Guardar producto
         <table>
             <thead>
                 <tr>
+                    <th class="p-2"> </th>
                     <th class="p-2"> Nombre </th>
                     <th class="p-2"> Descripción </th>
                     <th class="p-2"> Costo </th>
@@ -378,10 +450,13 @@ Guardar producto
             </thead>
             <tbody>
                 <tr *ngFor="let pr of arrProducts">
+                    <td class="getds" data-bs-toggle="modal" data-bs-target="#exampleModal3" (click)="asign_price(pr.cost_prod, pr.descu, pr.nom_prod, pr.total)">
+                        <mat-icon>preview</mat-icon>
+                    </td>
                     <td> {{pr.nom_prod}} </td>
                     <td> {{pr.desc_prod}} </td>
-                    <td> {{pr.cost_prod}} </td>
-                    <td> {{pr.descu}} </td>
+                    <td> ${{pr.cost_prod}} </td>
+                    <td> %{{pr.descu}} </td>
                     <td> {{pr.grupo}} </td>
                     <td> {{pr.sgrupo}} </td>
                     <td class="deletes">
@@ -389,7 +464,7 @@ Guardar producto
                             delete_outline
                         </mat-icon>
                     </td>
-                    <td class="updates" (click)="asignData(pr.img_prods, pr.id, pr.nom_prod, pr.cost_prod, pr.descu, pr.pres_prod, pr.desc_prod, pr.color, pr.uso, pr.grupo, pr.sgrupo, pr.cod_prod)">
+                    <td class="updates" (click)="asignData(pr.cod_cia, pr.img_prods, pr.id, pr.nom_prod, pr.cost_prod, pr.descu, pr.pres_prod, pr.desc_prod, pr.color, pr.uso, pr.grupo, pr.sgrupo, pr.cod_prod)">
                         <mat-icon class="text-light">edit</mat-icon>
                     </td>
                 </tr>

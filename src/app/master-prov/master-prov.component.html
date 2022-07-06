@@ -2,6 +2,64 @@
     <app-spinner></app-spinner>
 </div>
 
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCountriess" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Escojer un país:</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="search d-flex align-items-center">
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Nombre de país a filtrar: ({{cant_paises}}) </mat-label>
+                        <input matInput type="text" (keyup)="getNameCountries(_name_countrie)" [(ngModel)]="_name_countrie">
+                    </mat-form-field>
+                    <!-- <button>
+                    <mat-icon>search</mat-icon>
+                  </button> -->
+                </div>
+                <div class="tableFixHead w-100 ">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let jj of countriesArr" (click)="asignCountries(jj.name.common)" data-bs-dismiss="modal">
+                                <td class="asignData d-flex align-items-center">
+                                    <div class="p-1">
+                                        <img [src]="jj.flags.png" width="25px" height="auto">
+                                    </div>
+                                    <span class="p-1">
+                                    {{jj.name.common}}
+                                  </span>
+                                </td>
+
+                                <!--<td> {{jj.telef_a}} </td>
+                          <td> {{jj.telef_b}} </td>
+                          <td> {{jj.ruc}} </td>
+                          <td> {{jj.insti_fin}} </td>
+                          <td> {{jj.tipo_cuenta}} </td>
+                          <td> {{jj.n_cuenta}} </td> -->
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -122,7 +180,7 @@
                         </div>
                     </div>
                     <div class=" xxtab table-responsive d-flex flex-column w-100">
-                        <div class="btn btn-success p-1 mt-1" style="float: right;" (click)="_bool_des_server = !_bool_des_server; btnPost = true">
+                        <div class="btn btn-success p-1 mt-1" style="float: right;" (click)="_bool_des_server = !_bool_des_server; btnPost = !btnPost">
                             <div class="d-flex justify-content-center align-items-center">
                                 <mat-icon>add_circle</mat-icon> Agregar servicios a este proveedor
                             </div>
@@ -175,19 +233,7 @@
                                     <textarea matInput [(ngModel)]="_observ"></textarea>
                                 </mat-form-field>
                             </div>
-                            <div class="btnsets w-100">
-                                <button *ngIf="btnPost" class=" d-flex align-items-center justify-content-center" mat-raised-button color="warn" (click)="saveServs(_codec_us)">
-                                    <mat-icon>folder_special</mat-icon> Guardar {{_type_prov}}
-                                </button>
-                                <div class="btnsets d-flex" *ngIf="btnPut">
-                                    <button class=" d-flex align-items-center justify-content-center" mat-raised-button color="primary" (click)="putServices(_codec_us, _id_servs)">
-                                    <mat-icon>update</mat-icon> Actualizar {{_type_prov}} - Id. Serv.: ({{_id_servs}})
-                                </button>
-                                    <button class="w-25 d-flex align-items-center justify-content-center" mat-raised-button color="warn" (click)="cleanUp()">
-                                    <mat-icon>cancel</mat-icon>
-                                </button>
-                                </div>
-                            </div>
+
                         </div>
                         <table class="table table-sm caption-top table-bordered border-primary align-middle w-100">
                             <caption>Servicios <strong>({{cantServs}})</strong>:</caption>
@@ -213,7 +259,7 @@
                                     <td (click)="dServices(servs.id, servs.cod_prov)">
                                         <mat-icon>delete</mat-icon>
                                     </td>
-                                    <td (click)="asignServices(servs.id, servs.nom_serv, servs.desc_serv, servs.dias, servs.horas, servs.minutos, servs.cos_serv, servs.finit, servs.ffinal, servs.cost_add, servs.observ, servs.cod_serv)">
+                                    <td (click)="asignServices(servs.id, servs.nom_serv, servs.desc_serv, servs.dias, servs.horas, servs.minutos, servs.cos_serv, servs.finit, servs.ffinal, servs.cost_add, servs.observ, servs.cod_serv); _bool_des_server = !_bool_des_server;">
                                         <mat-icon>edit</mat-icon>
                                     </td>
                                     <td>{{servs.nom_serv}}</td>
@@ -233,7 +279,22 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" (click)="getProveedores(_type_prov, 'cod_prov', '_', 'asc', this.xx);" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <div class="btnsets d-flex w-100">
+                    <button *ngIf="btnPost" class=" d-flex align-items-center justify-content-center" mat-raised-button color="warn" (click)="saveServs(_codec_us); _bool_des_server = !_bool_des_server;">
+                        <mat-icon>folder_special</mat-icon> Guardar {{_type_prov}}
+                    </button>
+                    <div class="btnsets d-flex" *ngIf="btnPut">
+                        <button class=" d-flex align-items-center justify-content-center" mat-raised-button color="primary" (click)="putServices(_codec_us, _id_servs);">
+                            <mat-icon>update</mat-icon> Actualizar {{_type_prov}} - Id. Serv.: ({{_id_servs}})
+                        </button>
+                        <button class="w-25 d-flex align-items-center justify-content-center" mat-raised-button color="warn" (click)="cleanUp()">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </div>
+                    <button type="button" (click)="getProveedores(_type_prov, 'cod_prov', '_', 'asc', this.xx);" class="btn btn-secondary d-flex align-items-center" data-bs-dismiss="modal">
+                      <mat-icon>cancel</mat-icon>Close
+                    </button>
+                </div>
 
             </div>
         </div>
@@ -266,8 +327,8 @@
             <input type="file" (change)="encodeImageFileAsURLA('img', 'boxImg')" id="img" [(ngModel)]="_fServ" name="_fServ" class="inp-control">
         </div>
     </div> -->
-    <div class="comps w-100 m-2 bg-secondary p-1 text-light" style="height: 70px;">
-        <span class="p-3">Mi empresa: <strong>{{labelMessage | uppercase}}</strong></span>
+    <div class="comps rounded-2 w-100 m-2 bg-secondary p-1 text-light" style="height: 70px;">
+        <span class="p-3">Compañía: <strong class="fs-5 text-warning">{{labelMessage | uppercase}}</strong></span>
         <button *ngIf="btnPost" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" class="w-100 d-flex align-items-center justify-content-center" mat-raised-button color="warn">
         <mat-icon>leaderboard</mat-icon>Escoger mi compañía
       </button>
@@ -311,7 +372,7 @@
         </mat-form-field>
         <mat-form-field appearance="fill" class="inputsResp w-25 p-1">
             <mat-label>País:</mat-label>
-            <input matInput type="text" [disabled]="_lock" [(ngModel)]="_pais">
+            <input matInput type="text" [disabled]="_lock" data-bs-toggle="modal" data-bs-target="#exampleModalCountriess" (click)="getCountries()" [(ngModel)]="_pais">
         </mat-form-field>
         <mat-form-field appearance="fill" class=" inputsResp w-25 p-1">
             <mat-label>Ciudad:</mat-label>
@@ -352,7 +413,7 @@
                     <div class="hj table-responsive">
                         <table class="table table-dark align-middle table-bordered">
                             <thead class="bg-dark text-light align-middle ">
-                                <td class="p-2"> Nom. Proveedor</td>
+                                <td class="p-2">Nom. Proveedor</td>
                                 <td class="p-2"> Teléfono</td>
                                 <td class="p-2"> Dirección</td>
                                 <td class="p-2"> Ciudad</td>
@@ -366,7 +427,7 @@
                             <tbody>
                                 <tr *ngFor="let aa of proveeArrGet">
                                     <td (click)="genType(aa.tipo, aa.nom_prov, aa.cod_prov)">
-                                        <div data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="ddMOd d-flex align-items-center h-100 justify-content-start">
+                                        <div data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="ddMOd btn btn-warning d-flex align-items-center h-100 justify-content-start">
                                             <mat-icon>elevator</mat-icon> {{aa.nom_prov}}
                                         </div>
                                     </td>
