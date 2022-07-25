@@ -224,6 +224,7 @@ export class DashComponent implements OnInit {
   public _cont_accion_bool: boolean = false;
 
   getModuless(mod: number) {
+    console.log(mod)
     let xuser : any = sessionStorage.getItem('Token');
     switch (mod) {
       case 1:
@@ -231,6 +232,7 @@ export class DashComponent implements OnInit {
         this.Mods.getModules(1, xuser).subscribe({
           next: (mast) => {
             this.maestros = mast;
+            console.log(this.maestros);
           }
         });
         break;
@@ -239,6 +241,7 @@ export class DashComponent implements OnInit {
         this.Mods.getModules(1.1, xuser).subscribe({
           next: (mast) => {
             this.contMaestros = mast;
+            console.log(this.contMaestros);
           }
         });
         break;
@@ -264,6 +267,7 @@ export class DashComponent implements OnInit {
         this.Mods.getModules(3, xuser).subscribe({
           next: (conf) => {
             this.configuraciones = conf;
+            console.log(this.configuraciones)
           }
         });
         break;

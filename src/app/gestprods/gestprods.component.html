@@ -357,17 +357,19 @@
             <mat-label>Prescripción del producto: <span class="note bg-primary p-1 text-light">(Para quien va dirijido este producto)</span> </mat-label>
             <input matInput type="text" [(ngModel)]="_pres_prod" [disabled]="_lock">
         </mat-form-field>
-        <button style="height: 45px;" data-bs-toggle="modal" data-bs-target="#exampleModal3" (click)="asign_price(_cost_prod, _descu,'', 0.0)" id="dpatron" mat-raised-button color="primary" class="d-flex w-100 align-items-center">
+        <button style="height: 45px;" data-bs-toggle="modal" data-bs-target="#exampleModal3" (click)="asign_price(_cost_prod, _descu,_nom_prod, 0.0)" id="dpatron" mat-raised-button color="primary" class="d-flex w-100 align-items-center">
           <mat-icon>search</mat-icon>Asignar proveedores y servicios a este producto
         </button>
-        <mat-form-field appearance="fill" class="w-100">
-            <mat-label>Costo del Producto:</mat-label>
-            <input matInput type="number" [(ngModel)]="_cost_prod" [disabled]="_lock">
-        </mat-form-field>
-        <!-- <mat-form-field appearance="fill" class="w-100">
-            <mat-label>% Descuento del Producto:</mat-label>
-            <input matInput type="number" [(ngModel)]="_descu" [disabled]="_lock">
-        </mat-form-field> -->
+        <div class="d-flex justify-content-between mt-2">
+            <mat-form-field appearance="fill" class="w-100">
+                <mat-label>Costo del Producto:</mat-label>
+                <input matInput type="number" [(ngModel)]="_cost_prod" disabled>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="w-100">
+                <mat-label>% Descuento del Producto:</mat-label>
+                <input matInput type="number" [(ngModel)]="_descu" disabled>
+            </mat-form-field>
+        </div>
         <div class="d-flex w-100">
             <div class="inputsResp p-1" style="width: 20%;">
                 <label for="color">Color Hex.: <strong>{{_color}}</strong></label>
@@ -426,7 +428,7 @@ Guardar producto
     <div class="searck w-100">
         <mat-form-field appearance="fill" class="w-100">
             <mat-label>Buscador de productos por nombre (Presione la tecla ENTER):</mat-label>
-            <input matInput type="search" [(ngModel)]="_search" (keyup.enter)="this.getProducts(75, 'nom_prod', _search, 'asc', this.x)">
+            <input matInput type="search" [(ngModel)]="_search" (keyup.enter)="this.getProducts(this.x, 1, 'asc', _search )">
         </mat-form-field>
     </div>
     <div class="tableFixHead w-100 ">

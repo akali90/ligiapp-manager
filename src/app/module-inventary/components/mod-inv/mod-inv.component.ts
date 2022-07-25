@@ -56,26 +56,27 @@ export class ModInvComponent implements OnInit {
 ]
 
 
-public cantProducts: number = 0;
-public arrProducts: any = [];
-getProducts(top:number, properties:string, data:string, order:string) {
+public _show_spinner: boolean = false;
+  public cantProducts: number = 0;
+  public arrProducts: any = [];
+  getProducts( ccia: string, tipo: number, ord: string, nprod: string ) {
 
+    // console.log(ccia);
 
+    this.Prod.getProds(ccia, tipo, ord, nprod).subscribe({
+      next:(x)=>{
+        this.arrProducts = x;
+        console.log(this.arrProducts);
+      },
+      error: () => {
+        console.warn('No se ha podido encontrar el producto');
+      },
+      complete: () => {
+        this.cantProducts = this.arrProducts.length;
 
-  this.Prod.getProds(top, properties, data, order, this.xCia).subscribe({
-    next:(x)=>{
-      this.arrProducts = x;
-      console.log(this.arrProducts);
-    },
-    error: () => {
-      console.warn('No se ha podido encontrar el producto');
-    },
-    complete: () => {
-      this.cantProducts = this.arrProducts.length;
-
-    }
-  })
-}
+      }
+    })
+  }
 
 
   public arrInv: any = [];

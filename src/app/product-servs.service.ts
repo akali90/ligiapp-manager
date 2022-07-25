@@ -21,8 +21,13 @@ export class ProductServsService {
     return this.http.put(this.apiUrl + 'ProdMast/PutProdMaster/' + id, model);
   }
 
-  getProds(top:number, properties:string, data:string, order:string, ccia: string) {
-    return this.http.get( this.apiUrl + 'ProdMast/SelProdMaster/'+top+'/'+properties+'/'+data+'/'+order+'/'+ccia )
+  // getProds(top:number, properties:string, data:string, order:string, ccia: string) {
+  //   return this.http.get( this.apiUrl + 'ProdMast/SelProdMaster/'+top+'/'+properties+'/'+data+'/'+order+'/'+ccia )
+  // }
+
+  //SelProdMaster/{ccia}/{tipo}/{ord}/{nprod}
+  getProds(ccia: string, tipo: number, ord: string, nprod: string ) {
+    return this.http.get( this.apiUrl + 'ProdMast/SelProdMaster/'+ccia+'/'+tipo+'/'+ord+'/'+nprod )
   }
 
   getImgProds( ccia: string, cprod: string) {

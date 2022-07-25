@@ -81,6 +81,7 @@ export class GestprodsComponent implements OnInit {
   ngOnInit(): void {
 
     this._ftitle = Number(sessionStorage.getItem('font-size-title'));
+    let xcia: any = sessionStorage.getItem('Companies')
     this._fparagraph = Number(sessionStorage.getItem('font-size-paragraph'));
 
     this.getProveedores('servicios', 'cod_prov', '_', 'asc', this.xx);
@@ -88,7 +89,7 @@ export class GestprodsComponent implements OnInit {
 
     let y: any = sessionStorage.getItem('Name-Companies');
 
-    this.getProducts(75, 'cod_prod', '_', 'asc', this.x);
+    this.getProducts(xcia, 2, 'asc', '-');
 
     this.getComp();
 
@@ -108,7 +109,6 @@ export class GestprodsComponent implements OnInit {
     let xnomProd: any = localStorage.getItem('_nom_prod');
     this._nom_prod = xnomProd;
 
-    let xcia: any = sessionStorage.getItem('Companies')
     this.getCProds(xcia, xnomProd);
 
   }
@@ -178,6 +178,7 @@ export class GestprodsComponent implements OnInit {
     hideRequired: this.hideRequiredControl,
     floatLabel: this.floatLabelControl,
   });
+
   public icon_sel:string = '$';
   public _PVP: number = 0.0;
   public _Porc_Gan: number = 0.0;
@@ -206,6 +207,9 @@ export class GestprodsComponent implements OnInit {
     localStorage.setItem('calc-descu-prod', this.subtot.toString());
 
     let xcia: any = sessionStorage.getItem('Companies')
+    let cprod = xcia.slice(0,3) + '-' + this.tk.generateRandomString(9) + this._nom_prod.slice(0,5).replace(' ', '_812') + '-' + new Date().getDay() + new Date().getMonth() + new Date().getFullYear();
+    localStorage.setItem('cod_prod_asign', cprod);
+
 
     this.getCProds(xcia, xnomProd);
 
@@ -301,13 +305,18 @@ export class GestprodsComponent implements OnInit {
   public arrCProds: any = [];
   saveProdsCreate(cod_prov: string, cod_serv: string, cod_prod: string) {
 
+    console.log(cod_prov)
+    console.log(cod_prod)
+    console.log(cod_serv)
+
     this._show_spinner = true;
     let xCcia: any = sessionStorage.getItem('Companies');
     let npord: any = localStorage.getItem('_nom_prod');
-    let cprod = cod_prod.slice(0,3) + '-' + cod_prov + '-' + new Date().getFullYear();
+    let cprod: any = localStorage.getItem('cod_prod_asign');
+
     // let cserv = cod_prov.slice(0,5) + '-' + new Date().getFullYear() + '-' + 'SERV' + '-' + cod_serv.slice(0,30).replace(/\s+/g, '_');
 
-    console.log(cprod.length)
+    // console.log(cprod.length)
     console.log(cod_serv)
 
     this.arrCProds = {
@@ -448,11 +457,11 @@ export class GestprodsComponent implements OnInit {
   public _show_spinner: boolean = false;
   public cantProducts: number = 0;
   public arrProducts: any = [];
-  getProducts(top:number, properties:string, data:string, order:string, ccia:string) {
+  getProducts( ccia: string, tipo: number, ord: string, nprod: string ) {
 
     // console.log(ccia);
 
-    this.Prod.getProds(top, properties, data, order, ccia).subscribe({
+    this.Prod.getProds(ccia, tipo, ord, nprod).subscribe({
       next:(x)=>{
         this.arrProducts = x;
         console.log(this.arrProducts);
@@ -468,7 +477,7 @@ export class GestprodsComponent implements OnInit {
   }
 
   delProd(id:number) {
-
+    let xcompany: any = sessionStorage.getItem('Companies')
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -496,7 +505,7 @@ export class GestprodsComponent implements OnInit {
               title: 'Producto eliminado con éxito'
             })
 
-            this.getProducts(75, 'cod_prod', '_', 'asc', this.x);
+            this.getProducts(xcompany, 2, 'asc', '-');
 
           }
         })
@@ -511,11 +520,13 @@ export class GestprodsComponent implements OnInit {
   saveProdDB() {
 
     let x: any = sessionStorage.getItem('Companies');
+    let cprod: any = localStorage.getItem('cod_prod_asign');
+
 
     this.arrProdsS = {
       nom_prod  : this._nom_prod,
       desc_prod: this._desc_prod,
-      cod_prod : x.slice(0,5)+'_'+this.tk.generateRandomString(10)+'_'+this._nom_prod.slice(0,5)+'_PROD',
+      cod_prod : cprod,
       pres_prod: this._pres_prod,
       cost_prod: this._cost_prod,
       color    : this._color,
@@ -544,7 +555,7 @@ export class GestprodsComponent implements OnInit {
           title: 'Producto guardado con éxito'
         })
         localStorage.removeItem('_nom_prod');
-        this.getProducts(75, 'cod_prod', '_', 'asc', this.x);
+        this.getProducts(x, 2, 'asc', '-');
         this.getCProds('-', '-');
         this.cleanUp();
 
@@ -593,7 +604,7 @@ export class GestprodsComponent implements OnInit {
           title: 'Producto guardado con éxito'
         })
         this._show_spinner = false
-        this.getProducts(75, 'cod_prod', '_', 'asc', this.x);
+        this.getProducts(this.x, 2, 'asc', '-');
         this.cleanUp();
 
       }
@@ -630,6 +641,9 @@ export class GestprodsComponent implements OnInit {
     ,_sgrupo: string, codec_edit: string) {
 
     console.log('asign data esta activado');
+
+
+
     //_desc_prod
     // console.log(_imgg);
     localStorage.setItem('ID-PROD', (id).toString());
@@ -682,7 +696,7 @@ export class GestprodsComponent implements OnInit {
     sessionStorage.setItem('Companies',      companie);
     sessionStorage.setItem('Name-Companies', ncomp);
     this.labelMessage = ncomp;
-    this.getProducts(75, 'cod_prod', '_', 'asc', companie);
+    this.getProducts(companie, 2, 'asc', '-');
     this._lock = false;
   }
 
